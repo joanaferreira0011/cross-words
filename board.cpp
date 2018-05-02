@@ -6,13 +6,16 @@
 #include <ctime>
 #include <cstdlib> 
 #include <windows.h> 
+#include "dictionary.h"
+#include <sstream>
+#include <algorithm>  
 
-using namespace std;
+using namespace std;	
 
 #define LIGHTRED 12
 #define LIGHTGRAY 7 
 #define BLACK 0
-
+#define WHITE 15
 // COLOR
 void setcolor(unsigned int color) 
 { HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);   
@@ -24,9 +27,59 @@ if (background_color == BLACK)
 SetConsoleTextAttribute(hCon, color);   
 else     SetConsoleTextAttribute(hCon, color | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED); }
 
-
-Board::Board(string l, string c)
+bool Board::check_H(string word, int x, int y)
 {
+	size_t acum=0;
+	if ((matrix[y - 1][x] == '.' || matrix[y - 1][x] == '#') && (matrix[y + word.length()][x] == '.' || matrix[y + word.length()][x] == '#'))
+	{
+		while (acum < word.length())
+		{
+			if ((matrix[y][x] == '.') || (matrix[y][x] == word.at(acum)))
+			{
+				y++;
+				acum++;
+			}
+
+			else
+				return false;
+		}
+
+
+		if (acum == (word.length() + 1))
+			return true;
+	}
+	else
+		return false;
+}
+
+bool Board::check_V(string word, int y, int x)
+{
+	size_t acum = 0;
+	if ((matrix[x - 1][y] == '.' || matrix[x - 1][y] == '#') && (matrix[x + word.length()][y] == '.' || matrix[x + word.length()][y] == '#'))
+	{
+		while (acum < word.length())
+		{
+			if ((matrix[x][y] == '.') || (matrix[x][y] == word.at(acum)))
+			{
+				x++;
+				acum++;
+			}
+
+			else
+				return false;
+		}
+
+
+		if (acum == (word.length() + 1))
+			return true;
+	}
+	else
+		return false;
+}
+
+Board::Board(string l, string c, Dictionary d1)
+{
+	d = d1;
 	lines = stoi(l, nullptr, 10);
 	columns = stoi(c, nullptr, 10);
 
@@ -102,8 +155,10 @@ Board::Board(string l, string c)
 
 void Board::show()
 {
+	
 	cout << ' ';
 	// PRINT name of lines
+	
 	setcolor(LIGHTRED);
 	for (size_t i = 0; i < lines; i++)
 	{
@@ -122,7 +177,9 @@ void Board::show()
 			cout << matrix[a][i] << ' ';
 		cout << endl;
 	}
+	setcolor(WHITE, BLACK);
 	cout << endl;
+	
 }
 
 bool Board::addword(string position, string word)

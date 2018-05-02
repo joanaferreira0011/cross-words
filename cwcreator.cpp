@@ -1,4 +1,10 @@
-//
-// Created by Joana Ferreira on 26/04/2018.
-//
+#include "stdafx.h"
+#include "board.h"
+#include "dictionary.h"
 
+
+/*int main()
+{
+	Dictionary d1;
+	Board b1;
+}*/

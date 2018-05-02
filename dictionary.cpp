@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "dictionary.h" // Using the dictionary class
 #include <iostream>
 #include <vector>
