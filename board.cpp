@@ -99,7 +99,7 @@ Board::Board(string l, string c, Dictionary d1)
 	
 	for (size_t i = 0; i < name_lines.size(); i++)
 	{
-		char letter = 'a' + i;
+		char letter = (char)('a' + i);
 		name_lines[i] = letter;
 	}
 
@@ -109,7 +109,7 @@ Board::Board(string l, string c, Dictionary d1)
 
 	for (size_t i = 0; i < name_columns.size(); i++)
 	{
-		char letter = 'A' + i;
+		char letter = (char)('A' + i);
 		name_columns[i] = letter;
 	}
 
@@ -137,7 +137,7 @@ Board::Board(string l, string c)
 
 	for (size_t i = 0; i < name_lines.size(); i++)
 	{
-		char letter = 'a' + i;
+		char letter = (char)('a' + i);
 		name_lines[i] = letter;
 	}
 
@@ -147,7 +147,7 @@ Board::Board(string l, string c)
 
 	for (size_t i = 0; i < name_columns.size(); i++)
 	{
-		char letter = 'A' + i;
+		char letter = (char)('A' + i);
 		name_columns[i] = letter;
 	}
 
@@ -260,5 +260,50 @@ bool Board::addword(string position, string word)
 		cout << "Invalid input\n";
 		return false;
 	}
+
+}
+
+bool Board::remove_word(string position)
+{
+	if (position.length() == 3 && isupper(position[0]) && !(isupper(position[1])))
+	{
+		int y = position[0] - 'A';  //y and x is diferent from the ones in addword
+		int x = position[1] - 'a';
+		char orientation = position[2];
+		switch (orientation)
+		{
+		case 'H':
+		{size_t i = 0;
+		do
+		{
+			matrix[x + i][y] = '.';
+			i++;
+		} while (matrix[x + i][y] != '#' && matrix[x + i][y] != columns - 2);
+		return true;
+		}
+
+		case 'V':
+		{size_t i = 0;
+
+		do
+		{
+			if (!(matrix[x+1][y+i]== '.' || matrix[x + 1][y + i] == '#'))
+			matrix[x][y + i] = '.';
+			i++;
+			
+		} while (matrix[x][y + i] != '#' && matrix[x + i][y] != lines - 2);
+		matrix[x][y + i] = '.';
+
+		return true;
+		}
+		}
+	}
+	else
+	{
+		cout << "Not a valid input\n";
+		return false;
+	}
+
+
 
 }

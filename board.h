@@ -17,6 +17,7 @@ public:
 	//
 	Board(string lines, string columns, Dictionary d1);
 	bool addword(string position, string word);
+	bool remove_word(string position);
 	void show();
 private:
 	unsigned int lines;
