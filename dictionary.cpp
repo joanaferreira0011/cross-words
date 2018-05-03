@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "dictionary.h" // Using the dictionary class
 #include <iostream>
 #include <vector>
@@ -6,8 +5,11 @@
 #include <string>
 #include <algorithm>
 #include <fstream>
+#include <set>
 
 using namespace std;
+
+//  ------------- Additional Functions ------------- //
 
 // Will make the entire string in uppercase 
 void uppercase_letters(string &word)
@@ -15,11 +17,54 @@ void uppercase_letters(string &word)
 	transform(word.begin(), word.end(), word.begin(), toupper);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// WildcardMatch
+// str - Input string to match
+// strWild - Match mask that may contain wildcards like .
+//
+// A . sign matches any character, except an empty string.
+// Characters are compared caseless.
+//
+// ADAPTED FROM:
+// https://www.codeproject.com/Articles/188256/A-Simple-Wildcard-Matching-Function
+bool wildcardMatch(const char *str, const char *strWild)
+{
+	// We have a special case where string is empty ("") and the mask is "*".
+	// We need to handle this too. So we can't test on !*str here.
+	// The loop breaks when the match string is exhausted.
+	while (*strWild)
+	{
+		// Single wildcard character
+		if (*strWild == '.')
+		{
+			// Matches any character except empty string
+			if (!*str)
+				return false;
+			// OK next
+			++str;
+			++strWild;
+		}
+		else
+		{
+			// Standard compare of 2 chars. Note that *str might be 0 here,
+			// but then we never get a match on *strWild
+			// that has always a value while inside this loop.
+			if (toupper(*str++) != toupper(*strWild++))
+				return false;
+		}
+	}
+	// Have a match? Only if both are at the end...
+	return !*str && !*strWild;
+}
+
+ // ------------- Dictionary Class Functions ------------- //
+
 Dictionary::Dictionary()
 {
 	// Structure
-	synonymslist[""] = { "" };
-	validwordslist = { "" };
+	map<string, vector<string>> synonymslist;
+	set<string> validwordslist;
+	map<string, vector<string>> suggestedwords;
 }
 
 Dictionary::Dictionary(string filename)
@@ -27,7 +72,7 @@ Dictionary::Dictionary(string filename)
 	loadfile(filename);
 }
 
-// -------------- Input File ------------------ //
+//  Open the dictionary and put the words in a map
 void Dictionary::loadfile(string filename)
 {
 	ifstream dictionary;
@@ -48,14 +93,12 @@ void Dictionary::loadfile(string filename)
 
 	while (getline(dictionary, line))
 	{
-		uppercase_letters(words);
-
 		// Once you find ":", save the words from a list of synonyms
 		wordlist = line.find(":");
 		mainwordlist = line.substr(0, wordlist);
 
 		synonymslist.insert(pair<string, vector<string>>(mainwordlist, vector<string>()));
-		validwordslist.push_back(words);
+		validwordslist.insert(words);
 
 		next = wordlist + 2; // next word
 		wordlist = line.find_first_of(",", next);
@@ -82,6 +125,8 @@ void Dictionary::loadfile(string filename)
 	}
 }
 
+// Checks if the word is valid
+// Puts the words on a set
 bool Dictionary::validword(string word)
 {
 	bool isvalid;
@@ -89,11 +134,14 @@ bool Dictionary::validword(string word)
 	// Search a sorted list through binary search 
 	// ** More Efficient **
 
-	sort(validwordslist.begin(), validwordslist.end());
+	// sort(validwordslist.begin(), validwordslist.end());  //If a vector
 	isvalid = binary_search(validwordslist.begin(), validwordslist.end(), word);
 	
-	return isvalid;
-	
+	if (isvalid)
+		return true;
+	else
+		return false;
+
 	/* // ----   Not so efficient ----
 	bool isvalid = false;
 	
@@ -107,4 +155,18 @@ bool Dictionary::validword(string word)
 	}
 	return isvalid; 
 	*/
+}
+
+// Suggested words to complete the board.
+// Using the set of ordered valid words, check which one can be
+// inserted in the space left over, then remove the last element.
+// If you find matching words, they are stored in a map with 
+// a string of the first letter of the word, and in a vector 
+// of strings that are the valid words for given coordinates.
+void Dictionary::suggestions(string coordinates, string line)
+{
+	while (!line.empty())
+	{
+
+	}
 }

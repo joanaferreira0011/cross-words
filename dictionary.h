@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <set>
 
 using namespace std;
 
@@ -15,10 +16,13 @@ public:
 	Dictionary(string filename);
 	void loadfile(string filename);
 	bool validword(string word);
+	void suggestions(string coordinates, string line);
+	void showsuggestions();
 
 private:
 	map<string, vector<string>> synonymslist;
-	vector <string> validwordslist;
+	set<string> validwordslist;
+	map<string, vector<string>> suggestedwords;
 };
 
 #endif //CROSS_WORDS_DICTIONARY_H
