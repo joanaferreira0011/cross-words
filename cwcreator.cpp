@@ -10,8 +10,6 @@ void Option1_createpuzzle();
 
 int main()
 {
-	//Board b1;
-
 	// ================= INTERFACE ================= //
 	cout << "CROSSWORDS PUZZLE CREATOR " << endl;
 	cout << "================================================" << endl << endl;
@@ -47,7 +45,8 @@ void menu() // The user enters an option
 		break;
 
 	case 0:
-		break;
+		cout << " End of program " << endl;
+		exit(1);
 
 	default:
 		cout << "Option is invalid" << endl;
