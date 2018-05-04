@@ -7,6 +7,7 @@
 #include <fstream>
 #include <set>
 
+
 using namespace std;
 
 //  ------------- Additional Functions ------------- //
@@ -94,11 +95,12 @@ void Dictionary::loadfile(string filename)
 	while (getline(dictionary, line))
 	{
 		// Once you find ":", save the words from a list of synonyms
+		
 		wordlist = line.find(":");
 		mainwordlist = line.substr(0, wordlist);
-
+		uppercase_letters(mainwordlist);
 		synonymslist.insert(pair<string, vector<string>>(mainwordlist, vector<string>()));
-		validwordslist.insert(words);
+		validwordslist.insert(mainwordlist);
 
 		next = wordlist + 2; // next word
 		wordlist = line.find_first_of(",", next);
@@ -107,11 +109,23 @@ void Dictionary::loadfile(string filename)
 		{
 			words = line.substr(next, wordlist - next);
 			uppercase_letters(words);
-			// Update the list of synonyms
-			synonymslist[mainwordlist].push_back(words);
 
-			next = wordlist + 2; // next word
-			wordlist = line.find_first_of(",", next);
+			//  In case of errors in the dictionary
+			if (words[0] != '[' && words[0] != '{' && words[1] != '[')
+			{
+
+				// Update the list of synonyms
+				synonymslist[mainwordlist].push_back(words);
+
+				next = wordlist + 2; // next word
+				wordlist = line.find(",", next);
+			}
+			else {
+				// If the word contains errors
+				// with '{' or '[' is skipped to the next word
+				next = wordlist + 2;
+				wordlist = line.find(",", next);
+			}
 		}
 
 		// Check for more synonyms
@@ -157,6 +171,9 @@ bool Dictionary::validword(string word)
 	*/
 }
 
+/*
+--------------------- DON'T WORK ---------------------------
+
 // Suggested words to complete the board.
 // Using the set of ordered valid words, check which one can be
 // inserted in the space left over, then remove the last element.
@@ -167,6 +184,50 @@ void Dictionary::suggestions(string coordinates, string line)
 {
 	while (!line.empty())
 	{
+		string word;
 
+		for (string word : validwordslist)
+		{
+
+			if (wildcardMatch(word.c_str(), line.c_str()))
+			{
+				suggestedwords.insert(pair<string, vector<string>>(coordinates, vector<string>()));
+				suggestedwords[coordinates].push_back(word);
+			}
+		}
+		line.erase(line.length() - 1);  
 	}
 }
+
+// Shows the words of the map created, 
+// in 'suggestions' that can be placed in the spaces,
+// and the list of synonyms of the word
+void Dictionary::showsuggestions()
+{
+	vector<string> mainword;
+	vector<string> synonyms;
+
+	for (auto it = suggestedwords.cbegin(); it != suggestedwords.cend(); ++it)
+	{   
+		// show coordinates
+		cout << "Coordinates: " << (*it).first << "-> Words: " << endl; 
+		
+		mainword = (*it).second;
+
+		for (string word : mainword)
+		{
+			cout << "                              " << word << " - ";
+			synonyms = (*synonymslist.find(word)).second;
+
+			for (size_t i = 0; i < synonyms.size(); i++)
+			{
+				cout << synonyms.at(i) << ",";
+			}
+			cout << endl;
+		}
+
+
+	}
+
+}
+*/

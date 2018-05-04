@@ -3,6 +3,7 @@
 */
 
 #include "dictionary.h"
+#include "board.h"
 #include <iostream>
 #include <vector>
 #include <map>
@@ -25,5 +26,7 @@ int main()
 
 	//cin >> word;
 	//d1.validword(word);
+
+	
 }
 
