@@ -114,19 +114,15 @@ void Dictionary::loadfile(string filename)
 			//  In case of errors in the dictionary
 			if (words[0] != '[' && words[0] != '{' && words[1] != '[')
 			{
-
+				uppercase_letters(words);
 				// Update the list of synonyms
 				synonymslist[mainwordlist].push_back(words);
+			}
 
-				next = wordlist + 2; // next word
-				wordlist = line.find(",", next);
-			}
-			else {
-				// If the word contains errors
-				// with '{' or '[' is skipped to the next word
-				next = wordlist + 2;
-				wordlist = line.find(",", next);
-			}
+			// If the word contains errors
+			// with '{' or '[' is skipped to the next word
+			next = wordlist + 2; // next word
+			wordlist = line.find(",", next);
 		}
 
 		// Check for more synonyms
@@ -173,14 +169,10 @@ bool Dictionary::validword(string word)
 }
 
 
+/*
 // --------------------- DON'T WORK ---------------------------
 
 // Suggested words to complete the board.
-// Using the set of ordered valid words, check which one can be
-// inserted in the space left over, then remove the last element.
-// If you find matching words, they are stored in a map with 
-// a string of the first letter of the word, and in a vector 
-// of strings that are the valid words for given coordinates.
 void Dictionary::suggestions(string word)
 {
 	string lastchar;
@@ -197,7 +189,7 @@ void Dictionary::suggestions(string word)
 	}
 }
 
-// Shows the words of the map created, 
+// Shows the words of the vector created, 
 // in 'suggestions' that can be placed in the spaces,
 // and the list of synonyms of the word
 void Dictionary::showsuggestions()
@@ -205,7 +197,7 @@ void Dictionary::showsuggestions()
 	vector<string> mainword;
 	
 
-	for (auto it = suggestedwords.cbegin(); it != suggestedwords.cend(); ++it)
+	//for (int i = suggestedwords.cbegin(); i != suggestedwords.cend(); ++i)
 	{   
 
 		for (string word : mainword)
@@ -223,3 +215,4 @@ void Dictionary::showsuggestions()
 	}
 
 }
+*/
