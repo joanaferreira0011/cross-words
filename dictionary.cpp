@@ -82,6 +82,7 @@ void Dictionary::loadfile(string filename)
 	string mainwordlist;
 	int wordlist = 0;
 	int	next = 0;
+	
 
 	dictionary.open(filename);
 
@@ -171,8 +172,8 @@ bool Dictionary::validword(string word)
 	*/
 }
 
-/*
---------------------- DON'T WORK ---------------------------
+
+// --------------------- DON'T WORK ---------------------------
 
 // Suggested words to complete the board.
 // Using the set of ordered valid words, check which one can be
@@ -180,22 +181,19 @@ bool Dictionary::validword(string word)
 // If you find matching words, they are stored in a map with 
 // a string of the first letter of the word, and in a vector 
 // of strings that are the valid words for given coordinates.
-void Dictionary::suggestions(string coordinates, string line)
+void Dictionary::suggestions(string word)
 {
-	while (!line.empty())
+	string lastchar;
+	lastchar = word.at(word.length() - 1);
+	
+	while(!lastchar.empty())
 	{
-		string word;
-
 		for (string word : validwordslist)
 		{
-
-			if (wildcardMatch(word.c_str(), line.c_str()))
-			{
-				suggestedwords.insert(pair<string, vector<string>>(coordinates, vector<string>()));
-				suggestedwords[coordinates].push_back(word);
-			}
+		if (wildcardMatch(word.c_str(), lastchar.c_str()))
+				suggestedwords.push_back(word);
 		}
-		line.erase(line.length() - 1);  
+		lastchar.erase(lastchar.length() - 1);  
 	}
 }
 
@@ -205,23 +203,18 @@ void Dictionary::suggestions(string coordinates, string line)
 void Dictionary::showsuggestions()
 {
 	vector<string> mainword;
-	vector<string> synonyms;
+	
 
 	for (auto it = suggestedwords.cbegin(); it != suggestedwords.cend(); ++it)
 	{   
-		// show coordinates
-		cout << "Coordinates: " << (*it).first << "-> Words: " << endl; 
-		
-		mainword = (*it).second;
 
 		for (string word : mainword)
 		{
-			cout << "                              " << word << " - ";
-			synonyms = (*synonymslist.find(word)).second;
+			
 
-			for (size_t i = 0; i < synonyms.size(); i++)
+			for (size_t i = 0; i < suggestedwords.size(); i++)
 			{
-				cout << synonyms.at(i) << ",";
+				cout << suggestedwords.at(i) << ",";
 			}
 			cout << endl;
 		}
@@ -230,4 +223,3 @@ void Dictionary::showsuggestions()
 	}
 
 }
-*/

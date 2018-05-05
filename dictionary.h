@@ -17,13 +17,13 @@ public:
 	Dictionary(string filename);
 	void loadfile(string filename);
 	bool validword(string word);
-	void suggestions(string coordinates, string line);
+	void suggestions(string word);
 	void showsuggestions();
 
 private:
 	map<string, vector<string>> synonymslist;
 	set<string> validwordslist;
-	map<string, vector<string>> suggestedwords;
+	vector<string> suggestedwords;
 };
 
 #endif //CROSS_WORDS_DICTIONARY_H
