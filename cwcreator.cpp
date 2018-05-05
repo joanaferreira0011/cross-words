@@ -1,12 +1,13 @@
 #include "stdafx.h"
 #include "board.h"
 #include "dictionary.h"
-
-using namespace std;
+#include <fstream>
+#include <iostream>
 
 // -------------- Function prototypes -------------- // 
 
 void Option1_createpuzzle();
+void menu();
 
 int main()
 {
@@ -63,10 +64,17 @@ void Option1_createpuzzle()
 	cout << "------------------------------------------------" << endl;
 
 	cout << "Dictionary file name ? ";
+	
 	string filename;
-	getline(cin, filename);
-	Dictionary d1(filename);
+	cin >> filename;
 
-	// CONTINUE .....
+	Dictionary d1(filename);
+    
+	// Choose the size of the board
+	int line, column;
+
+	cout << "Board size (lines columns) ? ";
+	cin >> line >> column;
+	Board b1(line, column);
 
 }
