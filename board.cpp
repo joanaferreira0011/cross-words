@@ -75,44 +75,6 @@ bool Board::check_V(string &word, int &y, int &x)
 		return false;
 }
 
-Board::Board(string l, string c, Dictionary d1)
-{
-	d = d1;
-	lines = stoi(l, nullptr, 10);
-	columns = stoi(c, nullptr, 10);
-
-	//MATRIX BOARD
-	matrix.resize(lines);
-
-	for (size_t i = 0; i < matrix.size(); i++)
-		matrix[i].resize(columns);
-
-	for (size_t i = 0; i < matrix.size(); i++)
-		fill(matrix[i].begin(), matrix[i].end(), '.');
-
-
-	//NAME LINES
-	name_lines.resize(lines);
-
-	
-	for (size_t i = 0; i < name_lines.size(); i++)
-	{
-		char letter = (char)('a' + i);
-		name_lines[i] = letter;
-	}
-
-	// NAME COLUMNS
-	name_columns.resize(columns);
-
-
-	for (size_t i = 0; i < name_columns.size(); i++)
-	{
-		char letter = (char)('A' + i);
-		name_columns[i] = letter;
-	}
-
-}
-
 Board::Board(string l, string c)
 {
 	
@@ -308,4 +270,16 @@ bool Board::remove_word(string position)
 
 
 
+}
+
+void Board :: fill_finished()
+{
+	for (size_t i = 0; i < matrix.size(); i++)
+	{
+		for (size_t a = 0; a < matrix.at(i).size(); a++)
+		{
+			if (matrix.at(i).at(a) == '.')
+				matrix.at(i).at(a) = '#';
+		}
+}
 }
