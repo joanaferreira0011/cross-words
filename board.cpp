@@ -203,8 +203,6 @@ bool Board::addword(string position, string word)
 		transform(word.begin(), word.end(), word.begin(), toupper); //transform to uppercase
 
 
-		if (true)
-		{
 			switch (orientation) {
 			case 'H':
 			{
@@ -221,12 +219,13 @@ bool Board::addword(string position, string word)
 						i++;
 					}
 
-					//all_words.push_back(word); //add word to vector
+					//add to map
+					all_words.insert(pair<string, string>(position, word));
 					return true;
 				}
 				else
 				{
-					cout << "Can not fit that word\n";
+					std::cout << "Cannot fit " << word<< " in position " << position << endl<<endl;
 					return false;
 				}
 
@@ -235,7 +234,7 @@ bool Board::addword(string position, string word)
 
 			case 'V':
 			{
-				if (check_V(word, y, x))
+				if (check_V(word, x, y))
 				{
 					matrix[y][x-1] = '#';
 					matrix[y][x + word.length()] = '#';
@@ -247,29 +246,23 @@ bool Board::addword(string position, string word)
 						i++;
 					}
 
-					//all_words.push_back(word); //add word to vector
+					//add to map
+					all_words.insert(pair<string, string>(position, word));
 					return true;
 				}
 				else
 				{
-					cout << "Cannot fit that word\n";
+					std::cout << "Cannot fit " << word << " in position " << position <<endl<<endl;
 					return false;
 				}
 			}
 			}
-		}
-		else
-		{
-			cout << "Word not found in the dictionary";
-			return false;
-		}
 	}
 	else
 	{
 		cout << "Invalid input\n";
 		return false;
 	}
-
 }
 
 bool Board::remove_word(string position)
