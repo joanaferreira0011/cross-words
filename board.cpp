@@ -27,16 +27,15 @@ if (background_color == BLACK)
 SetConsoleTextAttribute(hCon, color);   
 else     SetConsoleTextAttribute(hCon, color | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED); }
 
-bool Board::check_H(string word, int x, int y)
+bool Board::check_H(string &word, int &x, int &y)
 {
 	size_t acum=0;
 	if ((matrix[y - 1][x] == '.' || matrix[y - 1][x] == '#') && (matrix[y + word.length()][x] == '.' || matrix[y + word.length()][x] == '#'))
 	{
 		while (acum < word.length())
 		{
-			if ((matrix[y][x] == '.') || (matrix[y][x] == word.at(acum)))
+			if ((matrix[y+acum][x] == '.') || (matrix[y+acum][x] == word.at(acum)))
 			{
-				y++;
 				acum++;
 			}
 
@@ -52,16 +51,15 @@ bool Board::check_H(string word, int x, int y)
 		return false;
 }
 
-bool Board::check_V(string word, int y, int x)
+bool Board::check_V(string &word, int &y, int &x)
 {
 	size_t acum = 0;
 	if ((matrix[x - 1][y] == '.' || matrix[x - 1][y] == '#') && (matrix[x + word.length()][y] == '.' || matrix[x + word.length()][y] == '#'))
 	{
 		while (acum < word.length())
 		{
-			if ((matrix[x][y] == '.') || (matrix[x][y] == word.at(acum)))
+			if ((matrix[x][y+acum] == '.') || (matrix[x][y+acum] == word.at(acum)))
 			{
-				x++;
 				acum++;
 			}
 
@@ -182,18 +180,29 @@ void Board::show()
 	
 }
 
+void Board::transform_to_pos(string position, int &x, int &y, char &orientation)
+{
+	x = position[0] - 'A';
+	y = position[1] - 'a';
+	orientation = position[2];
+}
+
 bool Board::addword(string position, string word)
 {
 	//check if valid input
 	if (position.length() == 3 && isupper(position[0]) && !(isupper(position[1])) && (toupper(position[2]) == 'V' || toupper(position[2]) == 'H'))
 	{
-		int x = position[0] - 'A';
-		int y = position[1] - 'a';
-		char orientation = position[2];
+		//initializing variables position
+		int x = 0;
+		int y = 0;
+		char orientation = 'a';
+
+		//get true value for variables position 
+		transform_to_pos(position, x, y, orientation);
+
 		transform(word.begin(), word.end(), word.begin(), toupper); //transform to uppercase
 
 
-		//if (d.validword(word))
 		if (true)
 		{
 			switch (orientation) {
@@ -212,7 +221,7 @@ bool Board::addword(string position, string word)
 						i++;
 					}
 
-					all_words.push_back(word); //add word to vector
+					//all_words.push_back(word); //add word to vector
 					return true;
 				}
 				else
@@ -238,7 +247,7 @@ bool Board::addword(string position, string word)
 						i++;
 					}
 
-					all_words.push_back(word); //add word to vector
+					//all_words.push_back(word); //add word to vector
 					return true;
 				}
 				else

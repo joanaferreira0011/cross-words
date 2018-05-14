@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include "dictionary.h"
+#include <map>
+
 
 using namespace std;
 
@@ -26,9 +28,10 @@ private:
 	vector<char> name_lines;
 	vector<char> name_columns;
 	Dictionary d;
-	bool check_H(string word, int x, int y);
-	bool check_V(string word, int y, int x);
-	vector<string> all_words;
+	bool check_H(string &word, int &x, int &y);
+	bool check_V(string &word, int &y, int &x);
+	map<string, string> all_words;
+	void transform_to_pos(string position, int &x, int &y, char &orientation);
 };
 
 #endif //PROG_EXERC_DATE_H
