@@ -227,10 +227,11 @@ bool Board::addword(string position, string word)
 	}
 }
 
-bool Board::remove_word(string position)
+void Board::remove_word(string position)
 {
-	if (position.length() == 3 && isupper(position[0]) && !(isupper(position[1])))
+	if (position.length() == 3 && isupper(position[0]) && !(isupper(position[1])) && (all_words.find(position) != all_words.end()))
 	{
+		all_words.erase(position);
 		int y = position[0] - 'A';  //y and x is diferent from the ones in addword
 		int x = position[1] - 'a';
 		char orientation = position[2];
@@ -238,41 +239,47 @@ bool Board::remove_word(string position)
 		{
 		case 'H':
 		{size_t i = 0;
+		matrix[x - 1][y] = '.';
 		do
 		{
 			matrix[x + i][y] = '.';
 			i++;
-		} while (matrix[x + i][y] != '#' && matrix[x + i][y] != columns - 2);
-		return true;
+		} while (matrix[x + i][y] != '#' && matrix[x + i][y] != (columns - 2));
+
+		matrix[x + i][y] = '.';
 		}
 
 		case 'V':
 		{size_t i = 0;
-
+		matrix[x][y - 1] = '.';
 		do
 		{
-			if (!(matrix[x+1][y+i]== '.' || matrix[x + 1][y + i] == '#'))
-			matrix[x][y + i] = '.';
-			i++;
-			
-		} while (matrix[x][y + i] != '#' && matrix[x + i][y] != lines - 2);
+				matrix[x][y + i] = '.';
+				i++;
+		
+
+		} while (matrix[x][y + i] != '#' && matrix[x][y+i] != lines - 2);
 		matrix[x][y + i] = '.';
 
-		return true;
 		}
 		}
+	
+	for (const auto& x : all_words)
+	{
+		addword_nochecking(x.first, x.second);
+	}
+
 	}
 	else
 	{
 		cout << "Not a valid input\n";
-		return false;
 	}
 
 
 
 }
 
-void Board :: fill_finished()
+void Board::fill_finished()
 {
 	for (size_t i = 0; i < matrix.size(); i++)
 	{
@@ -281,5 +288,47 @@ void Board :: fill_finished()
 			if (matrix.at(i).at(a) == '.')
 				matrix.at(i).at(a) = '#';
 		}
+	}
 }
+
+
+void Board::addword_nochecking(string position, string word)
+{
+
+	//initializing variables position
+	int x = 0;
+	int y = 0;
+	char orientation = 'a';
+
+	//get true value for variables position 
+	transform_to_pos(position, x, y, orientation);
+	switch (orientation)
+	{
+	case 'H':
+	{
+		matrix[y - 1][x] = '#';
+		matrix[y + word.length()][x] = '#';
+		size_t i = 0;
+		while (i < word.length())
+		{
+			matrix[y + i][x] = word.at(i);
+
+			i++;
+		}
+	}
+
+	case 'V':
+	{
+
+		matrix[y][x - 1] = '#';
+		matrix[y][x + word.length()] = '#';
+		size_t i = 0;
+		while (i < word.length())
+		{
+			matrix[y][x + i] = word.at(i);
+
+			i++;
+		}
+	}
+	}
 }

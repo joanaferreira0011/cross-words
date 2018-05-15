@@ -15,9 +15,10 @@ public:
 	Board();
 	Board(string lines, string columns);
 	bool addword(string position, string word);
-	bool remove_word(string position);
+	void remove_word(string position);
 	void show();
 	void fill_finished();
+	void addword_nochecking(string position, string word);
 private:
 	unsigned int lines;
 	unsigned int columns;
