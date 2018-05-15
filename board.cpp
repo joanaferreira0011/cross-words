@@ -149,7 +149,7 @@ void Board::transform_to_pos(string position, int &x, int &y, char &orientation)
 	orientation = position[2];
 }
 
-bool Board::addword(string position, string word)
+void Board::addword(string position, string word)
 {
 	//check if valid input
 	if (position.length() == 3 && isupper(position[0]) && !(isupper(position[1])) && (toupper(position[2]) == 'V' || toupper(position[2]) == 'H'))
@@ -183,12 +183,16 @@ bool Board::addword(string position, string word)
 
 					//add to map
 					all_words.insert(pair<string, string>(position, word));
-					return true;
+					break;
+
+					
 				}
 				else
 				{
 					std::cout << "Cannot fit " << word<< " in position " << position << endl<<endl;
-					return false;
+					break;
+
+					
 				}
 
 
@@ -210,21 +214,21 @@ bool Board::addword(string position, string word)
 
 					//add to map
 					all_words.insert(pair<string, string>(position, word));
-					return true;
+					break;
+
+					
 				}
 				else
 				{
-					std::cout << "Cannot fit " << word << " in position " << position <<endl<<endl;
-					return false;
+					std::cout << "Cannot fit " << word << " in position " << position << endl << endl;
+					break;
 				}
+			
 			}
 			}
 	}
 	else
-	{
 		cout << "Invalid input\n";
-		return false;
-	}
 }
 
 void Board::remove_word(string position)
@@ -336,3 +340,4 @@ void Board::addword_nochecking(string position, string word)
 	}
 	}
 }
+

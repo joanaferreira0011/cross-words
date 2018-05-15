@@ -14,7 +14,7 @@ class Board
 public:
 	Board() {};
 	Board(int lines, int columns);
-	bool addword(string position, string word);
+	void addword(string position, string word);
 	void remove_word(string position);
 	void show();
 	void fill_finished();
