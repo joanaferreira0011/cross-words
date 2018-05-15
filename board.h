@@ -12,8 +12,8 @@ using namespace std;
 class Board
 {
 public:
-	Board();
-	Board(string lines, string columns);
+	Board() {};
+	Board(int lines, int columns);
 	bool addword(string position, string word);
 	void remove_word(string position);
 	void show();

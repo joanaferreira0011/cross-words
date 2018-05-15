@@ -75,11 +75,11 @@ bool Board::check_V(string &word, int &y, int &x)
 		return false;
 }
 
-Board::Board(string l, string c)
+Board::Board(int l, int c)
 {
 	
-	lines = stoi(l, nullptr, 10);
-	columns = stoi(c, nullptr, 10);
+	lines = l;
+	columns = c;
 
 	//MATRIX BOARD
 	matrix.resize(lines);
