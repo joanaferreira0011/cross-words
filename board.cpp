@@ -238,31 +238,36 @@ void Board::remove_word(string position)
 		switch (orientation)
 		{
 		case 'H':
-		{size_t i = 0;
-		matrix[x - 1][y] = '.';
-		do
 		{
+			size_t i = 0;
+			matrix[x - 1][y] = '.';
+			do
+			{
+				matrix[x + i][y] = '.';
+				i++;
+			} while (matrix[x + i][y] != '#' && matrix[x + i][y] != (columns - 2));
+
 			matrix[x + i][y] = '.';
-			i++;
-		} while (matrix[x + i][y] != '#' && matrix[x + i][y] != (columns - 2));
+			break;
 
-		matrix[x + i][y] = '.';
 		}
-
 		case 'V':
-		{size_t i = 0;
-		matrix[x][y - 1] = '.';
-		do
 		{
+			size_t i = 0;
+			matrix[x][y - 1] = '.';
+			do
+			{
 				matrix[x][y + i] = '.';
 				i++;
-		
 
-		} while (matrix[x][y + i] != '#' && matrix[x][y+i] != lines - 2);
-		matrix[x][y + i] = '.';
+
+			} while (matrix[x][y + i] != '#' && matrix[x][y + i] != lines - 2);
+			matrix[x][y + i] = '.';
+			break;
 
 		}
-		}
+	
+	}
 	
 	for (const auto& x : all_words)
 	{
@@ -271,9 +276,7 @@ void Board::remove_word(string position)
 
 	}
 	else
-	{
 		cout << "Not a valid input\n";
-	}
 
 
 
@@ -302,8 +305,9 @@ void Board::addword_nochecking(string position, string word)
 
 	//get true value for variables position 
 	transform_to_pos(position, x, y, orientation);
-	switch (orientation)
-	{
+
+	//write the word
+	switch (orientation) {
 	case 'H':
 	{
 		matrix[y - 1][x] = '#';
