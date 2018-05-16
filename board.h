@@ -14,12 +14,31 @@ class Board
 public:
 	Board() {};
 	Board(int lines, int columns);
+	/* Creates board*/
 	void addword(string position, string word);
+	/* Adds word to board and map
+	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical
+	@word: str to be written in the board
+	@returns error message if word doesnt fit
+	@does not check if word exists*/
 	void remove_word(string position);
+	/* Removes word from board and map
+	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical
+	*/
 	void show();
+	/* prints board to console*/
 	void fill_finished();
+	/* fills all positions that have '.' with '#' */
 	void addword_nochecking(string position, string word);
+	/* Adds word to board and NOT to map, WITHOUT checking if word fits
+	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical
+	@word: str to be written in the board
+	@does not check if word exists*/
+
 	vector<string> get_wildcard(string position);
+	/* gets all words that fit in a space starting at @position with wildcards ('?') for instance "A?A??B"
+	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical*/
+
 private:
 	unsigned int lines;
 	unsigned int columns;
