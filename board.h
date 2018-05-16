@@ -13,11 +13,7 @@ class Board
 {
 public:
 	Board() {};
-<<<<<<< HEAD
 	Board(unsigned int lines, unsigned int columns);
-	bool addword(string position, string word);
-=======
-	Board(int lines, int columns);
 	/* Creates board*/
 	void addword(string position, string word);
 	/* Adds word to board and map
@@ -25,7 +21,6 @@ public:
 	@word: str to be written in the board
 	@returns error message if word doesnt fit
 	@does not check if word exists*/
->>>>>>> fabf4792cb5112e902048bdcc5756c2495ef0590
 	void remove_word(string position);
 	/* Removes word from board and map
 	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical
@@ -35,18 +30,15 @@ public:
 	void fill_finished();
 	/* fills all positions that have '.' with '#' */
 	void addword_nochecking(string position, string word);
-<<<<<<< HEAD
-	const vector<vector<char>> &matrixboard() const;
-=======
 	/* Adds word to board and NOT to map, WITHOUT checking if word fits
 	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical
 	@word: str to be written in the board
 	@does not check if word exists*/
-
+	const vector<vector<char>> &matrixboard() const;
+	/* returns the matrix of the board */
 	vector<string> get_wildcard(string position);
 	/* gets all words that fit in a space starting at @position with wildcards ('?') for instance "A?A??B"
 	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical*/
->>>>>>> fabf4792cb5112e902048bdcc5756c2495ef0590
 
 private:
 	unsigned int lines;

@@ -16,6 +16,7 @@ using namespace std;
 #define LIGHTGRAY 7 
 #define BLACK 0
 #define WHITE 15
+
 // COLOR
 void setcolor(unsigned int color) 
 { HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);   
@@ -340,12 +341,11 @@ void Board::addword_nochecking(string position, string word)
 	}
 }
 
-<<<<<<< HEAD
 const vector<vector<char>> &Board::matrixboard() const
 {
 	return matrix;
 }
-=======
+
 vector<string> Board::get_wildcard(string position)
 {
 	//check if valid input
@@ -412,5 +412,3 @@ vector<string> Board::get_wildcard(string position)
 		cout << "Invalid position \n \n";
 
 }
-
->>>>>>> fabf4792cb5112e902048bdcc5756c2495ef0590
