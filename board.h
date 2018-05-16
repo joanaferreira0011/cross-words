@@ -22,7 +22,7 @@ public:
 	@returns error message if word doesnt fit
 	@does not check if word exists*/
 	void remove_word(string position);
-	/* Removes word from board and map
+	/* Removes word from board and from map
 	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical
 	*/
 	void show();
@@ -39,7 +39,7 @@ public:
 	const map<string, string> &mapall_words() const;
 	/* return a map with the positions and words placed on the board */
 	vector<string> get_wildcard(string position);
-	/* gets all words that fit in a space starting at @position with wildcards ('?') for instance "A?A??B"
+	/* returns a vector with all words that fit in a line or column of the board starting at @position with wildcards ('?') for instance "A?A??B"
 	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical*/
 
 private:
