@@ -13,12 +13,14 @@ class Board
 {
 public:
 	Board() {};
-	Board(int lines, int columns);
+	Board(unsigned int lines, unsigned int columns);
 	bool addword(string position, string word);
 	void remove_word(string position);
 	void show();
 	void fill_finished();
 	void addword_nochecking(string position, string word);
+	const vector<vector<char>> &matrixboard() const;
+
 private:
 	unsigned int lines;
 	unsigned int columns;

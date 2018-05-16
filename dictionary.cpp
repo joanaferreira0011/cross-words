@@ -16,6 +16,7 @@ using namespace std;
 void uppercase_letters(string &word)
 {
 	transform(word.begin(), word.end(), word.begin(), toupper);
+	// transform(word.begin(), word.end(), word.begin(), [] (unsigned char c) { return toupper(c); } );
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -80,8 +81,8 @@ void Dictionary::loadfile(string filename)
 	string words;
 	string line;
 	string mainwordlist;
-	int wordlist = 0;
-	int	next = 0;
+	unsigned int wordlist = 0;
+	unsigned int next = 0;
 	
 
 	dictionary.open(filename);
@@ -97,22 +98,22 @@ void Dictionary::loadfile(string filename)
 	{
 		// Once you find ":", save the words from a list of synonyms
 		
-		wordlist = line.find(":");
+		wordlist = line.find(':');
 		mainwordlist = line.substr(0, wordlist);
 		uppercase_letters(mainwordlist);
 		synonymslist.insert(pair<string, vector<string>>(mainwordlist, vector<string>()));
 		validwordslist.insert(mainwordlist);
 
 		next = wordlist + 2; // next word
-		wordlist = line.find_first_of(",", next);
+		wordlist = line.find(',', next);
 
 		while (wordlist != string::npos)
 		{
 			words = line.substr(next, wordlist - next);
-			uppercase_letters(words);
+			
 
 			//  In case of errors in the dictionary
-			if (words[0] != '[' && words[0] != '{' && words[1] != '[')
+			if (words[0] != '[' && words[0] != '{')
 			{
 				uppercase_letters(words);
 				// Update the list of synonyms
@@ -122,7 +123,7 @@ void Dictionary::loadfile(string filename)
 			// If the word contains errors
 			// with '{' or '[' is skipped to the next word
 			next = wordlist + 2; // next word
-			wordlist = line.find(",", next);
+			wordlist = line.find(',', next);
 		}
 
 		// Check for more synonyms
@@ -148,10 +149,7 @@ bool Dictionary::validword(string word)
 	// sort(validwordslist.begin(), validwordslist.end());  //If a vector
 	isvalid = binary_search(validwordslist.begin(), validwordslist.end(), word);
 	
-	if (isvalid)
-		return true;
-	else
-		return false;
+	return isvalid;
 
 	/* // ----   Not so efficient ----
 	bool isvalid = false;
@@ -168,9 +166,7 @@ bool Dictionary::validword(string word)
 	*/
 }
 
-
 /*
-// --------------------- DON'T WORK ---------------------------
 
 // Suggested words to complete the board.
 void Dictionary::suggestions(string word)

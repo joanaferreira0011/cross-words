@@ -75,7 +75,7 @@ bool Board::check_V(string &word, int &y, int &x)
 		return false;
 }
 
-Board::Board(int l, int c)
+Board::Board(unsigned int l, unsigned int c)
 {
 	
 	lines = l;
@@ -291,7 +291,6 @@ void Board::fill_finished()
 	}
 }
 
-
 void Board::addword_nochecking(string position, string word)
 {
 
@@ -331,4 +330,9 @@ void Board::addword_nochecking(string position, string word)
 		}
 	}
 	}
+}
+
+const vector<vector<char>> &Board::matrixboard() const
+{
+	return matrix;
 }
