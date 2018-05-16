@@ -59,10 +59,9 @@ void cwcreator::Option1_createpuzzle()
 
 	cout << "Dictionary file name ? ";
 
-	string filename;
-	cin >> filename;
+	cin >> dictionaryname;
 
-	dictionary1 = Dictionary(filename);
+	dictionary1 = Dictionary(dictionaryname);
 
 	// Choose the size of the board
 	unsigned int line, column;
@@ -103,8 +102,7 @@ void cwcreator::Option1_createpuzzle()
 				board1.remove_word(position); // Remove Word
 			else if (word == "?")
 			{
-				//dictionary.suggestions();
-				// dictionary.showsuggestions();
+				
 
 				cout << "INCOMPLETO" << endl;
 			}
@@ -194,7 +192,6 @@ void cwcreator::save_board()
 {
 	string option;
 	ofstream outputstream;
-	string dictionaryfile;
 	static unsigned int boardnumber = 0;
 	boardnumber++;
 
@@ -204,28 +201,10 @@ void cwcreator::save_board()
 
 	cout << "Save file to " << filename << endl;
 
-	outputstream.open(filename);
-	outputstream << dictionaryfile << endl << endl;
-
+	//Prints the dictionary name on the first line
 	//Save to board file on the third line
-	for (vector<char> v1 : board1.matrixboard())
-	{
-		for (char c : v1)
-		{
-			outputstream << c;
-		}
-		outputstream << endl;
-	}
-
-	outputstream << endl;
-
-	// Save a list of positions with the words in the file
-	for (const auto & s : board1.mapall_words())
-	{
-		outputstream << s.first << " " << s.second << endl;
-	}
-
-	outputstream.close();
+	//Prints a list of words that have been placed on the board with their position
+	board1.printboard(filename,dictionaryname);
 
 	//Back to menu?
 	usercontinue();

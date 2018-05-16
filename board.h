@@ -27,6 +27,8 @@ public:
 	*/
 	void show();
 	/* prints board to console*/
+	void printboard(string filename,string dictionaryfile);
+	/* Prints the dictionary file name, the board, and a list of words placed on the board with their respective positions */
 	void fill_finished();
 	/* fills all positions that have '.' with '#' */
 	void addword_nochecking(string position, string word);

@@ -8,7 +8,8 @@
 #include <windows.h> 
 #include "dictionary.h"
 #include <sstream>
-#include <algorithm>  
+#include <algorithm> 
+#include <fstream>
 
 using namespace std;	
 
@@ -141,6 +142,30 @@ void Board::show()
 	setcolor(WHITE, BLACK);
 	cout << endl;
 	
+}
+
+void Board::printboard(string filenames, string dictionaryfile)
+{
+	ofstream output;
+	output.open(filenames);
+
+	output << dictionaryfile << endl << endl;
+
+	for (size_t i = 0; i < columns; i++)
+	{
+		for (size_t a = 0; a < lines; a++)
+			output << matrix[a][i] << ' ';
+		output << endl;
+	}
+	output << endl;
+
+	// Save a list of positions with the words in the file
+	for (const auto & s : mapall_words())
+	{
+		output << s.first << " " << s.second << endl;
+	}
+
+	output.close();
 }
 
 void Board::transform_to_pos(string position, int &x, int &y, char &orientation)
