@@ -22,6 +22,7 @@ public:
 	bool validword(string word);
 	/* Checks if the word is valid, and puts the words on a set */
 	vector<string> find_matches(vector<string> &possible_words);
+	/* */
 
 private:
 	map<string, vector<string>> synonymslist;
