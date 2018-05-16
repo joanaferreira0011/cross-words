@@ -19,6 +19,7 @@ public:
 	bool validword(string word);
 	void suggestions(string word);
 	void showsuggestions();
+	vector<string> find_matches(vector<string> &possible_words);
 
 private:
 	map<string, vector<string>> synonymslist;

@@ -168,7 +168,21 @@ bool Dictionary::validword(string word)
 	*/
 }
 
+vector<string> Dictionary::find_matches(vector<string> &possible_words)
+{
+	vector<string> words;
+	for (size_t i = 0; i < possible_words.size(); i++)
+	{
+		for (const auto& x : synonymslist)
+		{
+			if (wildcardMatch(possible_words.at(i).c_str(), x.first.c_str()))
+				words.push_back(x.first);
+		}
+	}
 
+	return words;
+	
+}
 /*
 // --------------------- DON'T WORK ---------------------------
 
