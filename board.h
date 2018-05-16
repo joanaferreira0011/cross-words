@@ -36,6 +36,8 @@ public:
 	@does not check if word exists*/
 	const vector<vector<char>> &matrixboard() const;
 	/* returns the matrix of the board */
+	const map<string, string> &mapall_words() const;
+	/* return a map with the positions and words placed on the board */
 	vector<string> get_wildcard(string position);
 	/* gets all words that fit in a space starting at @position with wildcards ('?') for instance "A?A??B"
 	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical*/

@@ -141,9 +141,8 @@ void Option1_createpuzzle()
 	} while (valid);
 }
 
-/*
 
-void resume_puzzle()
+void resume_puzzle() // INCOMPLETO
 {
 	ifstream boardfile;
 	ifstream dictionaryfile;
@@ -163,7 +162,7 @@ void resume_puzzle()
 		exit(1);
 	}
 
-	getline(boardfile, dictionaryfile);
+	//getline(boardfile, dictionaryfile);
 
 }
 
@@ -199,6 +198,7 @@ void question_is_over()
 void save_board()
 {
 	Board board;
+	string option;
 	ofstream outputstream;
 	string dictionaryfile;
 	static unsigned int boardnumber = 0;
@@ -210,7 +210,7 @@ void save_board()
 	
 	cout << "Save file to " << filename << endl;
 
-	filenameboard.open(filename);
+	outputstream.open(filename);
 	outputstream << dictionaryfile << endl << endl;
 
 	//Save to board file on the third line
@@ -223,41 +223,38 @@ void save_board()
 		outputstream << endl;
 	}
 
-	// Save a list of positions with the words in the file
-	for ( )
+	outputstream << endl;
 
+	// Save a list of positions with the words in the file
+	for (const auto & s : board.mapall_words)
+	{
+		outputstream << s.first << " " << s.second << endl;
+	}
+
+	outputstream.close();
+
+	//Back to menu?
+	usercontinue();
 }
 
+// Ask the user if they want to continue
 void usercontinue()
 {
-	char option;
+	string option;
 
-	cout << "Do you want to continue? Enter 'Y'es or 'N'o ";
-	cin >> option;
-
-	while (cin.fail() || option != 'Y' && option != 'y' && option != 'N' && option != 'n')
-	{
-		cin.clear();
-		cin.ignore(10000, '\n');
-		cout << "Invalid option " << endl;
-		cout << "Do you want to continue? Enter 'Y'es or 'N'o ";
-		cin >> option;
-	}
-
-	while (option == 'Y' || option == 'y')
-	{
-		menu();
-		cout << "Do you want to continue playing? 'Y'es or 'N'o? ";
+	do {
+		cout << "Do you want to continue? Enter yes or no ";
 		cin >> option;
 
-		while (cin.fail() || option != 'Y' && option != 'y' && option != 'N' && option != 'n')
-		{
-			cin.clear();
-			cin.ignore(10000, '\n');
-			cout << "Invalid option " << endl;
-			cout << "Do you want to continue? Enter 'Y'es or 'N'o ";
-			cin >> option;
+		if (option == "yes") {
+			menu();
 		}
-	}
+		else if (option == "no") {
+			exit(1);
+		}
+		else {
+			cerr << "Insert a valid option." << endl;
+		}
+	} while (option != "yes" || option != "no");
+	
 }
-*/

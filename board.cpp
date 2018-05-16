@@ -412,3 +412,8 @@ vector<string> Board::get_wildcard(string position)
 		cout << "Invalid position \n \n";
 
 }
+
+const map<string, string> &Board::mapall_words() const 
+{
+	return all_words;
+}
