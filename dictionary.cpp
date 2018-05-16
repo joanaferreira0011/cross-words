@@ -166,8 +166,6 @@ bool Dictionary::validword(string word)
 	*/
 }
 
-<<<<<<< HEAD
-=======
 vector<string> Dictionary::find_matches(vector<string> &possible_words)
 {
 	vector<string> words;
@@ -183,50 +181,4 @@ vector<string> Dictionary::find_matches(vector<string> &possible_words)
 	return words;
 	
 }
->>>>>>> fabf4792cb5112e902048bdcc5756c2495ef0590
-/*
 
-// Suggested words to complete the board.
-void Dictionary::suggestions(string word)
-{
-	string lastchar;
-	lastchar = word.at(word.length() - 1);
-	
-	while(!lastchar.empty())
-	{
-		for (string word : validwordslist)
-		{
-		if (wildcardMatch(word.c_str(), lastchar.c_str()))
-				suggestedwords.push_back(word);
-		}
-		lastchar.erase(lastchar.length() - 1);  
-	}
-}
-
-// Shows the words of the vector created, 
-// in 'suggestions' that can be placed in the spaces,
-// and the list of synonyms of the word
-void Dictionary::showsuggestions()
-{
-	vector<string> mainword;
-	
-
-	//for (int i = suggestedwords.cbegin(); i != suggestedwords.cend(); ++i)
-	{   
-
-		for (string word : mainword)
-		{
-			
-
-			for (size_t i = 0; i < suggestedwords.size(); i++)
-			{
-				cout << suggestedwords.at(i) << ",";
-			}
-			cout << endl;
-		}
-
-
-	}
-
-}
-*/
