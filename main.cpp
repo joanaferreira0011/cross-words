@@ -11,9 +11,10 @@ int main()
 	cout << "Position ( LCD / CTRL-Z = stop )" << endl;
 	cout << "LCD stands for Line Column and Direction" << endl << endl;
 	cout << "------------------------------------------------" << endl << endl;
-
-	cwcreator menu();
-	cwcreator usercontinue();
+	
+	cwcreator cwcreator1;
+	cwcreator1.menu();
+	cwcreator1.usercontinue();
 
 	return 0;
 }

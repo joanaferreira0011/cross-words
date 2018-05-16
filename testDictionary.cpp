@@ -27,8 +27,6 @@ int main()
 	//cin >> word;
 	//d1.validword(word);
 
-	d1.suggestions("...ae.d..");
-	d1.showsuggestions;
 
 	
 }

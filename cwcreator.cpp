@@ -137,7 +137,6 @@ void cwcreator::Option1_createpuzzle()
 	} while (valid);
 }
 
-
 void cwcreator::resume_puzzle() // INCOMPLETO
 {
 	ifstream boardfile;
