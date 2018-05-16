@@ -1,45 +1,22 @@
 #include "stdafx.h"
 #include "board.h"
 #include "dictionary.h"
+#include "cwcreator.h"
 #include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <map>
 
 using namespace std;
 
-// -------------- Function prototypes -------------- // 
-
-void Option1_createpuzzle();
-void menu();
-void uppercase_letterscw(string &word);
-void usercontinue();
-
-int main()
-{
-	// ================= INTERFACE ================= //
-	cout << "CROSSWORDS PUZZLE CREATOR " << endl;
-	cout << "================================================" << endl << endl;
-	cout << "INSTRUCTIONS: " << endl;
-	cout << "Position ( LCD / CTRL-Z = stop )" << endl;
-	cout << "LCD stands for Line Column and Direction" << endl << endl;
-	cout << "------------------------------------------------" << endl << endl;
-	
-
-	menu();
-	usercontinue();
-	
-
-	return 0;
-}
-
 // Will make the entire string in uppercase 
-void uppercase_letterscw(string &word)
+void cwcreator::uppercase_letterscw(string &word)
 {
 	transform(word.begin(), word.end(), word.begin(), toupper);
 }
 
-void menu() // The user enters an option
+void cwcreator::menu() // The user enters an option
 {
 	unsigned int option;
 	cout << "OPTIONS: " << endl;
@@ -74,46 +51,46 @@ void menu() // The user enters an option
 	}
 }
 
-void Option1_createpuzzle()
+void cwcreator::Option1_createpuzzle()
 {
 	cout << "------------------------------------------------" << endl;
 	cout << "CREATE PUZZLE " << endl;
 	cout << "------------------------------------------------" << endl;
 
 	cout << "Dictionary file name ? ";
-	
+
 	string filename;
 	cin >> filename;
 
-	Dictionary d1(filename);
-    
+	dictionary1 = Dictionary(filename);
+
 	// Choose the size of the board
 	unsigned int line, column;
 
 	cout << "Board size (lines columns) ? ";
 	cin >> line >> column;
-	
+
 	while (cin.fail())
 	{
 		cin.clear();
-		cin.ignore(1000,'\n');
+		cin.ignore(1000, '\n');
 		cout << "Enter valid numbers!" << endl;
 		cin >> line >> column;
 	}
-	
-	Board board;
-	board = Board(line, column);
-	board.show();
+
+
+	board1 = Board(line, column);
+	board1.show();
 
 	string position, word;
 	bool valid = true;
 
-	do 
+	do
 	{
-		
+
 		cout << "Position (LCD / CTRL-Z = stop) ?  ";
 		cin >> position;
-		
+
 		if (!cin.eof()) // If not you enter ctrl + z
 		{
 
@@ -123,7 +100,7 @@ void Option1_createpuzzle()
 			uppercase_letterscw(word);
 
 			if (word == "-")
-				board.remove_word(position); // Remove Word
+				board1.remove_word(position); // Remove Word
 			else if (word == "?")
 			{
 				//dictionary.suggestions();
@@ -131,18 +108,37 @@ void Option1_createpuzzle()
 
 				cout << "INCOMPLETO" << endl;
 			}
-			else if (d1.validword(word)) // Is valid?
-			board.addword(position, word); // Add Word
+			else if (dictionary1.validword(word)) // Is valid?
+				board1.addword(position, word); // Add Word
 			else cout << "The word is not in the dictionary or you entered an invalid position" << endl;
-			board.show();
+			board1.show();
 			cout << endl;
 		}
-		else valid = false;
+		else
+		{
+
+			valid = false;
+
+			string option;
+
+			while (option != "no" && option != "yes") {
+				cin.clear();
+				cout << "You want to save the board? (yes / no) ";
+				cin >> option;
+				if (option == "yes")
+					save_board();
+				else if (option == "no")
+					exit(1);
+				else if (option != "no")
+					cerr << "Insert a valid option." << endl;
+			}
+		}
+
 	} while (valid);
 }
 
 
-void resume_puzzle() // INCOMPLETO
+void cwcreator::resume_puzzle() // INCOMPLETO
 {
 	ifstream boardfile;
 	ifstream dictionaryfile;
@@ -169,7 +165,7 @@ void resume_puzzle() // INCOMPLETO
 // Ask the user if you have finished 
 // and fill in the blanks
 // save the board in a text file
-void question_is_over()
+void cwcreator::question_is_over()
 {
 	string option;
 	Board board;
@@ -195,26 +191,25 @@ void question_is_over()
 }
 
 // Save the board in a text file
-void save_board()
+void cwcreator::save_board()
 {
-	Board board;
 	string option;
 	ofstream outputstream;
 	string dictionaryfile;
 	static unsigned int boardnumber = 0;
-	boardnumber++; 
+	boardnumber++;
 
 	ostringstream filenameboard;
 	filenameboard << 'b' << setw(3) << setfill('0') << boardnumber << ".txt";
-	string filename = filenameboard.str(); 
-	
+	string filename = filenameboard.str();
+
 	cout << "Save file to " << filename << endl;
 
 	outputstream.open(filename);
 	outputstream << dictionaryfile << endl << endl;
 
 	//Save to board file on the third line
-	for (vector<char> v1 : board.matrixboard())
+	for (vector<char> v1 : board1.matrixboard())
 	{
 		for (char c : v1)
 		{
@@ -226,7 +221,7 @@ void save_board()
 	outputstream << endl;
 
 	// Save a list of positions with the words in the file
-	for (const auto & s : board.mapall_words)
+	for (const auto & s : board1.mapall_words())
 	{
 		outputstream << s.first << " " << s.second << endl;
 	}
@@ -238,23 +233,36 @@ void save_board()
 }
 
 // Ask the user if they want to continue
-void usercontinue()
+void cwcreator::usercontinue()
 {
-	string option;
+	char option;
+	cin.clear();
 
-	do {
-		cout << "Do you want to continue? Enter yes or no ";
+	cout << "Do you want to continue? Enter 'Y'es or 'N'o ";
+	cin >> option;
+
+	while (cin.fail() || option != 'Y' && option != 'y' && option != 'N' && option != 'n')
+	{
+		cin.clear();
+		cin.ignore(10000, '\n');
+		cout << "Invalid option " << endl;
+		cout << "Do you want to continue? Enter 'Y'es or 'N'o ";
+		cin >> option;
+	}
+
+	while (option == 'Y' || option == 'y')
+	{
+		menu();
+		cout << "Do you want to continue playing? 'Y'es or 'N'o? ";
 		cin >> option;
 
-		if (option == "yes") {
-			menu();
+		while (cin.fail() || option != 'Y' && option != 'y' && option != 'N' && option != 'n')
+		{
+			cin.clear();
+			cin.ignore(10000, '\n');
+			cout << "Invalid option " << endl;
+			cout << "Do you want to continue? Enter 'Y'es or 'N'o ";
+			cin >> option;
 		}
-		else if (option == "no") {
-			exit(1);
-		}
-		else {
-			cerr << "Insert a valid option." << endl;
-		}
-	} while (option != "yes" || option != "no");
-	
+	}
 }
