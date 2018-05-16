@@ -19,6 +19,7 @@ public:
 	void show();
 	void fill_finished();
 	void addword_nochecking(string position, string word);
+	vector<string> get_wildcard(string position);
 private:
 	unsigned int lines;
 	unsigned int columns;
