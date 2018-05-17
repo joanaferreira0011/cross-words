@@ -4,10 +4,7 @@
 #include "cwcreator.h"
 #include <algorithm>
 #include <fstream>
-#include <iostream>
 #include <sstream>
-#include <string>
-#include <map>
 
 using namespace std;
 
@@ -62,7 +59,7 @@ void cwcreator::create_puzzle()
 
 	cin >> dictionaryname;
 
-	Dictionary d1(dictionaryname);
+	dictionary = Dictionary (dictionaryname);
 
 	// Choose the size of the board
 	unsigned int line, column;
@@ -78,10 +75,10 @@ void cwcreator::create_puzzle()
 		cin >> line >> column;
 	}
 
-	Board b1(line, column);
-	b1.show();
+    board = Board (line, column);
+	board.show();
 
-	update_board(b1, d1);
+	update_board(board, dictionary);
 }
 
 void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
@@ -107,8 +104,6 @@ void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
 				boardname.remove_word(position); // Remove Word
 			else if (word == "?")
 			{
-
-
 				cout << "INCOMPLETO" << endl;
 			}
 			else if (dictionaryname.validword(word)) // Is valid?
@@ -141,7 +136,7 @@ void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
 
 }
 
-void cwcreator::resume_puzzle() // INCOMPLETO
+void cwcreator::resume_puzzle()
 {
 	cout << "------------------------------------------------" << endl;
 	cout << "RESUME PUZZLE " << endl;
@@ -152,7 +147,6 @@ void cwcreator::resume_puzzle() // INCOMPLETO
 	string boardfilename, dictionaryfilename, line;
 	int lines = 1;
 	int columns = 0;
-	map <string, string> words;
 
 	cout << "Enter the board file name you want to change: ";
 	cin >> boardfilename;
@@ -249,9 +243,9 @@ void cwcreator::save_board(Board boardname)
 	static unsigned int boardnumber = 0;
 	boardnumber++;
 
-	ostringstream filenameboard;
-	filenameboard << 'b' << setw(3) << setfill('0') << boardnumber << ".txt";
-	string filename = filenameboard.str();
+	stringstream filenameboard;
+	filenameboard << setw(3) << setfill('0') << boardnumber;
+	string filename = "b" + filenameboard.str() + ".txt";
 
 	cout << "Save file to " << filename << endl;
 
