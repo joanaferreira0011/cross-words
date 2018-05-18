@@ -8,8 +8,8 @@
 #include <windows.h> 
 #include "dictionary.h"
 #include <sstream>
-#include <algorithm> 
-#include <fstream>
+#include <algorithm>  
+#include <fstream> 
 
 using namespace std;	
 
@@ -374,9 +374,7 @@ const vector<vector<char>> &Board::matrixboard() const
 
 vector<string> Board::get_wildcard(string position)
 {
-	//check if valid input
-	if (position.length() == 3 && isupper(position[0]) && !(isupper(position[1])) && (toupper(position[2]) == 'V' || toupper(position[2]) == 'H'))
-	{
+
 		//initializing variables position
 		int x = 0;
 		int y = 0;
@@ -433,13 +431,79 @@ vector<string> Board::get_wildcard(string position)
 		}
 
 		return words;
-	}
-	else
-		cout << "Invalid position \n \n";
 
 }
 
 const map<string, string> &Board::mapall_words() const 
 {
 	return all_words;
+}
+
+bool Board::is_word_at_position(string &position, string &word)
+{
+	if (all_words.find(position)->second == word)
+		return true;
+	else
+		return false;
+}
+
+/*
+void Board::show_emptyboard()
+{
+	empty_matrix.resize(lines);
+
+	for (size_t i = 0; i < empty_matrix.size(); i++)
+		matrix[i].resize(columns);
+
+	for (size_t i = 0; i < empty_matrix.size(); i++)
+		fill(matrix[i].begin(), matrix[i].end(), '.');
+
+	cout << ' ';
+	// PRINT name of lines
+
+	setcolor(LIGHTRED);
+	for (size_t i = 0; i < lines; i++)
+	{
+		cout << ' ' << name_lines[i];
+	}
+
+	cout << endl;
+
+	for (size_t i = 0; i < columns; i++)
+	{
+		setcolor(LIGHTRED, BLACK);
+		cout << name_columns[i] << ' ';
+
+		setcolor(BLACK, LIGHTGRAY);
+		for (size_t a = 0; a < lines; a++)
+			cout << empty_matrix[a][i] << ' ';
+		cout << endl;
+	}
+	setcolor(WHITE, BLACK);
+	cout << endl;
+}
+*/
+
+void Board::printboard(string filenames, string dictionaryfile)
+{
+	ofstream output;
+	output.open(filenames);
+
+	output << dictionaryfile << endl << endl;
+
+	for (size_t i = 0; i < columns; i++)
+	{
+		for (size_t a = 0; a < lines; a++)
+			output << matrix[a][i] << ' ';
+		output << endl;
+	}
+	output << endl;
+
+	// Save a list of positions with the words in the file 
+	for (const auto & s : mapall_words())
+	{
+		output << s.first << " " << s.second << endl;
+	}
+
+	output.close();
 }

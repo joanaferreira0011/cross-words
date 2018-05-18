@@ -24,10 +24,12 @@ public:
 	/* Removes word from board and map
 	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical
 	*/
+	void printboard(string filename, string dictionaryfile);
+	/* Prints the dictionary file name, the board, and a list of words placed on the board with their respective positions */
 	void show();
 	/* prints board to console*/
-	void printboard(string filename,string dictionaryfile);
-	/* Prints the dictionary file name, the board, and a list of words placed on the board with their respective positions */
+	//void show_emptyboard();
+	/* prints empty board to console*/
 	void fill_finished();
 	/* fills all positions that have '.' with '#' */
 	void addword_nochecking(string position, string word);
@@ -47,6 +49,7 @@ private:
 	unsigned int lines;
 	unsigned int columns;
 	vector<vector<char> > matrix;
+	vector<vector<char> > empty_matrix;
 	vector<char> name_lines;
 	vector<char> name_columns;
 	bool check_H(string &word, int &x, int &y);
