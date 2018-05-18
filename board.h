@@ -27,8 +27,6 @@ public:
 	*/
 	void show();
 	/* prints board to console*/
-	void printboard(string filename,string dictionaryfile);
-	/* Prints the dictionary file name, the board, and a list of words placed on the board with their respective positions */
 	void fill_finished();
 	/* fills all positions that have '.' with '#' */
 	void addword_nochecking(string position, string word);
@@ -43,7 +41,8 @@ public:
 	vector<string> get_wildcard(string position);
 	/* returns a vector with all words that fit in a line or column of the board starting at @position with wildcards ('?') for instance "A?A??B"
 	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical*/
-
+	bool is_word_at_position(string &position, string &word);
+	/*  check if str word is locatedd at position in the board*/
 private:
 	unsigned int lines;
 	unsigned int columns;

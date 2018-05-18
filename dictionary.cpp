@@ -182,5 +182,14 @@ vector<string> Dictionary::find_matches(vector<string> &possible_words)
 	
 }
 
-
-
+void Dictionary::print_matches(vector<string> &possible_words)
+{
+	vector<string> words = find_matches(possible_words);
+	if (words.size() == 0)
+		std::cout << "Sorry, no matching words for that position" << endl << endl;
+	else
+	{
+		random_shuffle(possible_words.begin(), words.end());
+		std::cout << "Possible words you could use: " << words.at(0) << ", " << words.at(1) << endl << endl;
+	}
+}

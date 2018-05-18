@@ -8,8 +8,7 @@
 #include <windows.h> 
 #include "dictionary.h"
 #include <sstream>
-#include <algorithm> 
-#include <fstream>
+#include <algorithm>  
 
 using namespace std;	
 
@@ -32,9 +31,12 @@ else     SetConsoleTextAttribute(hCon, color | BACKGROUND_BLUE | BACKGROUND_GREE
 bool Board::check_H(string &word, int &x, int &y)
 {
 	size_t acum=0;
-	if ((matrix[y - 1][x] == '.' || matrix[y - 1][x] == '#') && (matrix[y + word.length()][x] == '.' || matrix[y + word.length()][x] == '#'))
+	if ((y - 1 < 0) && ((y + word.length() - 1) <lines)) //check if word starts at the beginning of the board
+		goto cycle;
+
+	if ((matrix.at(y - 1).at(x) == '.' || matrix.at(y - 1).at(x) == '#') && ((y+ word.length()-1) <columns) && (matrix[y + word.length()][x] == '.' || matrix[y + word.length()][x] == '#'))
 	{
-		while (acum < word.length())
+cycle:	while (acum < word.length())
 		{
 			if ((matrix[y+acum][x] == '.') || (matrix[y+acum][x] == word.at(acum)))
 			{
@@ -56,9 +58,13 @@ bool Board::check_H(string &word, int &x, int &y)
 bool Board::check_V(string &word, int &y, int &x)
 {
 	size_t acum = 0;
-	if ((matrix[x - 1][y] == '.' || matrix[x - 1][y] == '#') && (matrix[x + word.length()][y] == '.' || matrix[x + word.length()][y] == '#'))
+	if ((y - 1 < 0) && ((y + word.length() - 1) <lines)) //check if word starts at the beginning of the board
+		goto cycle;
+
+
+	if ((matrix[x][y-1] == '.' || matrix[x][y-1] == '#') && ((y + word.length()-1) <lines) && (matrix.at(x).at(y + word.length()) == '.' || matrix.at(x).at(y + word.length()) == '#'))
 	{
-		while (acum < word.length())
+cycle:	while (acum < word.length())
 		{
 			if ((matrix[x][y+acum] == '.') || (matrix[x][y+acum] == word.at(acum)))
 			{
@@ -144,30 +150,6 @@ void Board::show()
 	
 }
 
-void Board::printboard(string filenames, string dictionaryfile)
-{
-	ofstream output;
-	output.open(filenames);
-
-	output << dictionaryfile << endl << endl;
-
-	for (size_t i = 0; i < columns; i++)
-	{
-		for (size_t a = 0; a < lines; a++)
-			output << matrix[a][i] << ' ';
-		output << endl;
-	}
-	output << endl;
-
-	// Save a list of positions with the words in the file
-	for (const auto & s : mapall_words())
-	{
-		output << s.first << " " << s.second << endl;
-	}
-
-	output.close();
-}
-
 void Board::transform_to_pos(string position, int &x, int &y, char &orientation)
 {
 	x = position[0] - 'A';
@@ -197,8 +179,12 @@ void Board::addword(string position, string word)
 				//check if empty
 				if (check_H(word, x, y))
 				{
+					if(y-1 >=0) //check if it starts in the beginning of the board
 					matrix[y-1][x] = '#';
+
+					if (y + word.length()<columns) //check if it ends in the end of the board
 					matrix[y + word.length()][x] = '#';
+
 					size_t i = 0;
 					while (i < word.length())
 					{
@@ -228,8 +214,12 @@ void Board::addword(string position, string word)
 			{
 				if (check_V(word, x, y))
 				{
+					if (x - 1 >= 0) //check if it starts in the beginning of the board
 					matrix[y][x-1] = '#';
+
+					if (x + word.length()<columns) //check if it ends in the end of the board
 					matrix[y][x + word.length()] = '#';
+
 					size_t i = 0;
 					while (i < word.length())
 					{
@@ -441,4 +431,12 @@ vector<string> Board::get_wildcard(string position)
 const map<string, string> &Board::mapall_words() const 
 {
 	return all_words;
+}
+
+bool Board::is_word_at_position(string &position, string &word)
+{
+	if (all_words.find(position)->second == word)
+		return true;
+	else
+		return false;
 }
