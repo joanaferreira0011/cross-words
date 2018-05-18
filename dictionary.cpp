@@ -172,7 +172,7 @@ vector<string> Dictionary::find_matches(vector<string> &possible_words)
 	{
 		for (const auto& x : synonymslist)
 		{
-			if (wildcardMatch(possible_words.at(i).c_str(), x.first.c_str()))
+			if (wildcardMatch(x.first.c_str(), possible_words.at(i).c_str()))
 				words.push_back(x.first);
 		}
 	}
