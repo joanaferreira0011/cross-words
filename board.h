@@ -44,6 +44,8 @@ public:
 	vector<string> get_wildcard(string position);
 	/* gets all words that fit in a space starting at @position with wildcards ('?') for instance "A?A??B"
 	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical*/
+	bool is_word_at_position(string &position, string &word);
+	/*  check if str word is locatedd at position in the board*/
 
 private:
 	unsigned int lines;
