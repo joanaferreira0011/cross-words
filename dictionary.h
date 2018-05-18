@@ -16,11 +16,15 @@ public:
 	Dictionary();
 	/* Standard function */
 	Dictionary(string filename);
-	/* load the dictionary */
+	/* Load the dictionary 
+	@Has as parameters the name of the file to load */
 	void loadfile(string filename);
-	/* Open the dictionary and put the words in a map */
+	/* Open the dictionary and put the words in a map 
+	@Has as parameters the name of the file to load */
 	bool validword(string word);
-	/* Checks if the word is valid, and puts the words on a set */
+	/* Checks if the word is valid, and puts the words on a set
+	@It has as parameter a string that is a word that will verify if it is in the dictionary
+	@Returns true if it is a valid word, or returns false if the word is not valid  */
 	vector<string> find_matches(vector<string> &possible_words);
 	/* */
 
