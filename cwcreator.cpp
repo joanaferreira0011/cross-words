@@ -168,13 +168,14 @@ void cwcreator::resume_puzzle()
 	{
 		cin.clear();
 		cin.ignore(1000, '\n');
-		cout << "File " << "board" << " not found !\n";
+		cerr << "File " << "board" << " not found !\n";
 		cout << "Enter the board file name you want to change: ";
 		cin >> boardfilename;
 		boardfile.open(boardfilename);
 	}
 
 	getline(boardfile, dictionaryfilename);
+	this->dictionaryname = dictionaryfilename;
 	Dictionary dictionary1(dictionaryfilename);
 
 	getline(boardfile, line); // Skip empty line
@@ -207,13 +208,7 @@ void cwcreator::resume_puzzle()
 	board1.show();
 
 	// ---- The same as the create puzzle function --- //
-	cout << "Dictionary file name ? ";
-
-	cin >> dictionaryname;
-
-	dictionary1 = Dictionary(dictionaryname);
-
-	update_board(board1, dictionary1);
+	update_board(board1, dictionaryfilename);
 }
 
 // Ask the user if you have finished 
