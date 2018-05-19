@@ -105,7 +105,8 @@ void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
 				boardname.remove_word(position); // Remove Word
 			else if (word == "?")
 			{
-				cout << "Incompleto" << endl;
+				vector<string> thewords = boardname.get_wildcard(position);
+				dictionaryname.print_matches(thewords);
 			}
 			else if (dictionaryname.validword(word)) // Is valid?
 				boardname.addword(position, word); // Add Word

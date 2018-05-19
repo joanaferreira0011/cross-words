@@ -33,9 +33,13 @@ else     SetConsoleTextAttribute(hCon, color | BACKGROUND_BLUE | BACKGROUND_GREE
 bool Board::check_H(string &word, int &x, int &y)
 {
 	size_t acum=0;
-	if ((matrix[y - 1][x] == '.' || matrix[y - 1][x] == '#') && (matrix[y + word.length()][x] == '.' || matrix[y + word.length()][x] == '#'))
+	if ((y - 1 < 0) && ((y + word.length() - 1) <lines)) //check if word starts at the beginning of the board 
+		goto cycle;
+
+
+	if ((matrix.at(y - 1).at(x) == '.' || matrix.at(y - 1).at(x) == '#') && ((y + word.length() - 1) <columns) && (matrix[y + word.length()][x] == '.' || matrix[y + word.length()][x] == '#'))
 	{
-		while (acum < word.length())
+	cycle:	while (acum < word.length())
 		{
 			if ((matrix[y+acum][x] == '.') || (matrix[y+acum][x] == word.at(acum)))
 			{
@@ -57,11 +61,14 @@ bool Board::check_H(string &word, int &x, int &y)
 bool Board::check_V(string &word, int &y, int &x)
 {
 	size_t acum = 0;
-	if ((matrix[x - 1][y] == '.' || matrix[x - 1][y] == '#') && (matrix[x + word.length()][y] == '.' || matrix[x + word.length()][y] == '#'))
+	if ((y - 1 < 0) && ((y + word.length() - 1) <lines)) //check if word starts at the beginning of the board 
+		goto cycle;
+
+	if ((matrix[x][y - 1] == '.' || matrix[x][y - 1] == '#') && ((y + word.length() - 1) <lines) && (matrix.at(x).at(y + word.length()) == '.' || matrix.at(x).at(y + word.length()) == '#'))
 	{
 		while (acum < word.length())
 		{
-			if ((matrix[x][y+acum] == '.') || (matrix[x][y+acum] == word.at(acum)))
+	cycle:		if ((matrix[x][y+acum] == '.') || (matrix[x][y+acum] == word.at(acum)))
 			{
 				acum++;
 			}
@@ -199,8 +206,11 @@ void Board::addword(string position, string word)
 				//check if empty
 				if (check_H(word, x, y))
 				{
-					matrix[y-1][x] = '#';
-					matrix[y + word.length()][x] = '#';
+					if (y - 1 >= 0) //check if it starts in the beginning of the board 
+						matrix[y - 1][x] = '#';
+
+					if (y + word.length()<columns) //check if it ends in the end of the board 
+						matrix[y + word.length()][x] = '#';
 					size_t i = 0;
 					while (i < word.length())
 					{
@@ -231,8 +241,11 @@ void Board::addword(string position, string word)
 			{
 				if (check_V(word, x, y))
 				{
-					matrix[y][x-1] = '#';
-					matrix[y][x + word.length()] = '#';
+					if (x - 1 >= 0) //check if it starts in the beginning of the board 
+						matrix[y][x - 1] = '#';
+
+					if (x + word.length()<columns) //check if it ends in the end of the board 
+						matrix[y][x + word.length()] = '#';
 					size_t i = 0;
 					while (i < word.length())
 					{
@@ -491,3 +504,11 @@ void Board::show_emptyboard()
 	cout << endl;
 }
 */
+
+bool Board::is_word_at_position(string &position, string &word)
+{
+	if (all_words.find(position)->second == word)
+		return true;
+	else
+		return false;
+}
