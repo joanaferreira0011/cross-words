@@ -512,3 +512,17 @@ bool Board::is_word_at_position(string &position, string &word)
 	else
 		return false;
 }
+
+bool Board::is_word_in_board(string &word)
+{
+	auto it = std::find_if(all_words.begin(),
+		all_words.end(),
+		[&word](const auto& kv_pair) {
+		return kv_pair.second == look_for;
+	});
+	if (it != all_words.end()) 
+		return true;
+	else
+		return false;
+
+}

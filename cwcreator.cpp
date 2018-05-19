@@ -108,7 +108,12 @@ void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
 				dictionaryname.print_matches(thewords);
 			}
 			else if (dictionaryname.validword(word)) // Is valid?
-				boardname.addword(position, word); // Add Word
+			{
+				if (board.is_word_in_board(word))
+					std::cout << "That word is already on the board \n";
+				else
+					boardname.addword(position, word); // Add Word
+			}
 			else cout << "The word is not in the dictionary or you entered an invalid position" << endl;
 			boardname.show();
 			cout << endl;
