@@ -46,6 +46,8 @@ public:
 	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical*/
 	bool is_word_at_position(string &position, string &word);
 	/*  check if str word is locatedd at position in the board*/
+	//bool finalcheck();
+	//checks if all words in the board make sense
 
 private:
 	unsigned int lines;
