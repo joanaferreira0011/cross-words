@@ -181,8 +181,6 @@ vector<string> Dictionary::find_matches(vector<string> &possible_words)
 	
 }
 
-
-
 void Dictionary::print_matches(vector<string> &possible_words)
 {
 	vector<string> words = find_matches(possible_words);

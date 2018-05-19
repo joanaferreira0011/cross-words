@@ -194,6 +194,7 @@ void Board::addword(string position, string word)
 
 			switch (orientation) {
 			case 'H':
+			case 'h':
 			{
 				//check if empty
 				if (check_H(word, x, y))
@@ -226,6 +227,7 @@ void Board::addword(string position, string word)
 			}
 
 			case 'V':
+			case 'v':
 			{
 				if (check_V(word, x, y))
 				{
@@ -269,6 +271,7 @@ void Board::remove_word(string position)
 		switch (orientation)
 		{
 		case 'H':
+		case 'h':
 		{
 			size_t i = 0;
 			matrix[x - 1][y] = '.';
@@ -283,6 +286,7 @@ void Board::remove_word(string position)
 
 		}
 		case 'V':
+		case 'v':
 		{
 			size_t i = 0;
 			matrix[x][y - 1] = '.';
@@ -339,6 +343,7 @@ void Board::addword_nochecking(string position, string word)
 	//write the word
 	switch (orientation) {
 	case 'H':
+	case 'h':
 	{
 		matrix[y - 1][x] = '#';
 		matrix[y + word.length()][x] = '#';
@@ -352,6 +357,7 @@ void Board::addword_nochecking(string position, string word)
 	}
 
 	case 'V':
+	case 'v':
 	{
 
 		matrix[y][x - 1] = '#';
@@ -388,6 +394,7 @@ vector<string> Board::get_wildcard(string position)
 		switch (orientation)
 		{
 		case 'V':
+		case 'v':
 		{
 			if (matrix[x][y] != '.')
 				possible_word += matrix[x][y];
@@ -409,6 +416,7 @@ vector<string> Board::get_wildcard(string position)
 		}
 
 		case 'H':
+		case 'h':
 		{
 			if (matrix[x][y] != '.')
 				possible_word += matrix[x][y];
@@ -483,27 +491,3 @@ void Board::show_emptyboard()
 	cout << endl;
 }
 */
-
-void Board::printboard(string filenames, string dictionaryfile)
-{
-	ofstream output;
-	output.open(filenames);
-
-	output << dictionaryfile << endl << endl;
-
-	for (size_t i = 0; i < columns; i++)
-	{
-		for (size_t a = 0; a < lines; a++)
-			output << matrix[a][i] << ' ';
-		output << endl;
-	}
-	output << endl;
-
-	// Save a list of positions with the words in the file 
-	for (const auto & s : mapall_words())
-	{
-		output << s.first << " " << s.second << endl;
-	}
-
-	output.close();
-}
