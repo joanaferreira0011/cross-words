@@ -209,7 +209,7 @@ void Board::addword(string position, string word)
 					if (y - 1 >= 0) //check if it starts in the beginning of the board 
 						matrix[y - 1][x] = '#';
 
-					if (y + word.length()<columns) //check if it ends in the end of the board 
+					if (y + word.length()<=columns) //check if it ends in the end of the board 
 						matrix[y + word.length()][x] = '#';
 					size_t i = 0;
 					while (i < word.length())
@@ -244,7 +244,7 @@ void Board::addword(string position, string word)
 					if (x - 1 >= 0) //check if it starts in the beginning of the board 
 						matrix[y][x - 1] = '#';
 
-					if (x + word.length()<columns) //check if it ends in the end of the board 
+					if (x + word.length()<=lines) //check if it ends in the end of the board 
 						matrix[y][x + word.length()] = '#';
 					size_t i = 0;
 					while (i < word.length())
@@ -505,24 +505,13 @@ void Board::show_emptyboard()
 }
 */
 
-bool Board::is_word_at_position(string &position, string &word)
-{
-	if (all_words.find(position)->second == word)
-		return true;
-	else
-		return false;
-}
 
 bool Board::is_word_in_board(string &word)
 {
-	auto it = std::find_if(all_words.begin(),
-		all_words.end(),
-		[&word](const auto& kv_pair) {
-		return kv_pair.second == look_for;
-	});
-	if (it != all_words.end()) 
-		return true;
-	else
-		return false;
-
+	for (const auto& kv_pair : all_words)
+	{
+		if (kv_pair.second == word)
+			return true;
+	}
+	return false;
 }

@@ -110,7 +110,7 @@ void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
 			}
 			else if (dictionaryname.validword(word)) // Is valid?
 			{
-				if (board.is_word_in_board(word))
+				if (boardname.is_word_in_board(word))
 					std::cout << "That word is already on the board \n";
 				else
 					boardname.addword(position, word); // Add Word
@@ -126,7 +126,7 @@ void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
 
 			string option;
 
-			question_is_over();
+			//question_is_over();
 			
 			while (option != "no" && option != "yes") {
 				cin.clear();
