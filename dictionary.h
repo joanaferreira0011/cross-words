@@ -18,7 +18,7 @@ public:
 	Dictionary(string filename);
 	/* Load the dictionary
 	@Has as parameters the name of the file to load */
-	void loadfile(string filename);
+	void loadfile(const string &filename);
 	/* Open the dictionary and put the words in a map
 	@Has as parameters the name of the file to load */
 	bool validword(string word);

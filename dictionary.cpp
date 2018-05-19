@@ -74,7 +74,7 @@ Dictionary::Dictionary(string filename)
 }
 
 //  Open the dictionary and put the words in a map
-void Dictionary::loadfile(string filename)
+void Dictionary::loadfile(const string &filename)
 {
 	ifstream dictionary;
 	string words;
