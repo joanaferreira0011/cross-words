@@ -59,7 +59,7 @@ void cwcreator::create_puzzle()
 
 	cin >> dictionaryname;
 
-	dictionary = Dictionary (dictionaryname);
+	dictionary = Dictionary(dictionaryname);
 
 	// Choose the size of the board
 	unsigned int line, column;
@@ -74,8 +74,8 @@ void cwcreator::create_puzzle()
 		cout << "Enter valid numbers!" << endl;
 		cin >> line >> column;
 	}
-	
-    board = Board (line, column);
+
+	board = Board(line, column);
 	board.show();
 
 	update_board(board, dictionary);
@@ -109,7 +109,12 @@ void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
 				dictionaryname.print_matches(thewords);
 			}
 			else if (dictionaryname.validword(word)) // Is valid?
-				boardname.addword(position, word); // Add Word
+			{
+				if (boardname.is_word_in_board(word))
+					std::cout << "That word is already on the board \n";
+				else
+					boardname.addword(position, word); // Add Word
+			}
 			else cout << "The word is not in the dictionary or you entered an invalid position" << endl;
 			boardname.show();
 			cout << endl;
@@ -122,7 +127,7 @@ void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
 			string option;
 
 			//question_is_over();
-			
+
 			while (option != "no" && option != "yes") {
 				cin.clear();
 				cout << "You want to save the board? (yes / no) ";
@@ -145,7 +150,7 @@ void cwcreator::resume_puzzle()
 	cout << "------------------------------------------------" << endl;
 	cout << "RESUME PUZZLE " << endl;
 	cout << "------------------------------------------------" << endl;
-	
+
 	ifstream boardfile;
 
 	string boardfilename, dictionaryfilename, line;
@@ -158,7 +163,7 @@ void cwcreator::resume_puzzle()
 	//opening file
 	boardfile.open(boardfilename);
 
-	
+
 	while (!boardfile.is_open())
 	{
 		cin.clear();
@@ -169,15 +174,15 @@ void cwcreator::resume_puzzle()
 		boardfile.open(boardfilename);
 	}
 
-	getline(boardfile,dictionaryfilename);
+	getline(boardfile, dictionaryfilename);
 	Dictionary dictionary1(dictionaryfilename);
 
 	getline(boardfile, line); // Skip empty line
 
-	// Count the columns
+							  // Count the columns
 
 	getline(boardfile, line) && line != "";
-	
+
 	string strings = " ";
 	for (size_t i = 0; i < line.size(); i++)
 	{
@@ -197,16 +202,16 @@ void cwcreator::resume_puzzle()
 		if (line != "")
 			board1.addword(line.substr(0, line.find(' ')), line.substr(line.find(' ') + 1, line.size() - 1));
 	}
-	
+
 	boardfile.close();
 	board1.show();
-	
+
 	// ---- The same as the create puzzle function --- //
 	cout << "Dictionary file name ? ";
 
 	cin >> dictionaryname;
 
-	dictionary1 = Dictionary(dictionaryname);	
+	dictionary1 = Dictionary(dictionaryname);
 
 	update_board(board1, dictionary1);
 }
@@ -217,7 +222,7 @@ void cwcreator::resume_puzzle()
 void cwcreator::question_is_over(Board boardname)
 {
 	string option;
-	
+
 	do
 	{
 		cout << "Finished the board (yes / no)?";
@@ -227,9 +232,9 @@ void cwcreator::question_is_over(Board boardname)
 		{
 			boardname.fill_finished();
 			//bool valid = 
-		//	if (true) {
-		//	save_board();
-		//}
+			//	if (true) {
+			//	save_board();
+			//}
 			break;
 		}
 		else if (option != "no")
@@ -256,7 +261,7 @@ void cwcreator::save_board(Board boardname)
 	//Prints the dictionary name on the first line
 	//Save to board file on the third line
 	//Prints a list of words that have been placed on the board with their position
-	boardname.printboard(filename,dictionaryname);
+	boardname.printboard(filename, dictionaryname);
 
 	//Back to menu?
 	usercontinue();

@@ -48,6 +48,8 @@ public:
 	/*  check if str word is locatedd at position in the board*/
 	//bool finalcheck();
 	//checks if all words in the board make sense
+	bool is_word_in_board(string &word);
+	//check if str word is already in board
 
 private:
 	unsigned int lines;

@@ -11,7 +11,7 @@
 #include <algorithm>  
 #include <fstream> 
 
-using namespace std;	
+using namespace std;
 
 #define LIGHTRED 12
 #define LIGHTGRAY 7 
@@ -19,20 +19,24 @@ using namespace std;
 #define WHITE 15
 
 // COLOR
-void setcolor(unsigned int color) 
-{ HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);   
-SetConsoleTextAttribute(hcon, color); }
+void setcolor(unsigned int color)
+{
+	HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hcon, color);
+}
 
-void setcolor(unsigned int color, unsigned int background_color) 
-{ HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);   
-if (background_color == BLACK)     
-SetConsoleTextAttribute(hCon, color);   
-else     SetConsoleTextAttribute(hCon, color | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED); }
+void setcolor(unsigned int color, unsigned int background_color)
+{
+	HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (background_color == BLACK)
+		SetConsoleTextAttribute(hCon, color);
+	else     SetConsoleTextAttribute(hCon, color | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+}
 // ------------------------------------------------------------------------------- //
 
 bool Board::check_H(string &word, int &x, int &y)
 {
-	size_t acum=0;
+	size_t acum = 0;
 	if ((y - 1 < 0) && ((y + word.length() - 1) <lines)) //check if word starts at the beginning of the board 
 		goto cycle;
 
@@ -40,19 +44,19 @@ bool Board::check_H(string &word, int &x, int &y)
 	if ((matrix.at(y - 1).at(x) == '.' || matrix.at(y - 1).at(x) == '#') && ((y + word.length() - 1) <columns) && (matrix[y + word.length()][x] == '.' || matrix[y + word.length()][x] == '#'))
 	{
 	cycle:	while (acum < word.length())
+	{
+		if ((matrix[y + acum][x] == '.') || (matrix[y + acum][x] == word.at(acum)))
 		{
-			if ((matrix[y+acum][x] == '.') || (matrix[y+acum][x] == word.at(acum)))
-			{
-				acum++;
-			}
-
-			else
-				return false;
+			acum++;
 		}
 
+		else
+			return false;
+	}
 
-		if (acum == (word.length() + 1))
-			return true;
+
+			if (acum == (word.length() + 1))
+				return true;
 	}
 	else
 		return false;
@@ -68,13 +72,13 @@ bool Board::check_V(string &word, int &y, int &x)
 	{
 		while (acum < word.length())
 		{
-	cycle:		if ((matrix[x][y+acum] == '.') || (matrix[x][y+acum] == word.at(acum)))
-			{
-				acum++;
-			}
+		cycle:		if ((matrix[x][y + acum] == '.') || (matrix[x][y + acum] == word.at(acum)))
+		{
+			acum++;
+		}
 
-			else
-				return false;
+					else
+						return false;
 		}
 
 
@@ -87,7 +91,7 @@ bool Board::check_V(string &word, int &y, int &x)
 
 Board::Board(unsigned int l, unsigned int c)
 {
-	
+
 	lines = l;
 	columns = c;
 
@@ -125,10 +129,10 @@ Board::Board(unsigned int l, unsigned int c)
 
 void Board::show()
 {
-	
+
 	cout << ' ';
 	// PRINT name of lines
-	
+
 	setcolor(LIGHTRED);
 	for (size_t i = 0; i < lines; i++)
 	{
@@ -149,7 +153,7 @@ void Board::show()
 	}
 	setcolor(WHITE, BLACK);
 	cout << endl;
-	
+
 }
 
 void Board::printboard(string filenames, string dictionaryfile)
@@ -199,75 +203,75 @@ void Board::addword(string position, string word)
 		transform(word.begin(), word.end(), word.begin(), toupper); //transform to uppercase
 
 
-			switch (orientation) {
-			case 'H':
-			case 'h':
+		switch (orientation) {
+		case 'H':
+		case 'h':
+		{
+			//check if empty
+			if (check_H(word, x, y))
 			{
-				//check if empty
-				if (check_H(word, x, y))
+				if (y - 1 >= 0) //check if it starts in the beginning of the board 
+					matrix[y - 1][x] = '#';
+
+				if (y + word.length() <= columns) //check if it ends in the end of the board 
+					matrix[y + word.length()][x] = '#';
+				size_t i = 0;
+				while (i < word.length())
 				{
-					if (y - 1 >= 0) //check if it starts in the beginning of the board 
-						matrix[y - 1][x] = '#';
+					matrix[y + i][x] = word.at(i);
 
-					if (y + word.length()<columns) //check if it ends in the end of the board 
-						matrix[y + word.length()][x] = '#';
-					size_t i = 0;
-					while (i < word.length())
-					{
-						matrix[y+i][x] = word.at(i);
-						
-						i++;
-					}
-
-					//add to map
-					all_words.insert(pair<string, string>(position, word));
-					break;
-
-					
+					i++;
 				}
-				else
-				{
-					std::cout << "Cannot fit " << word<< " in position " << position << endl<<endl;
-					break;
 
-					
-				}
+				//add to map
+				all_words.insert(pair<string, string>(position, word));
+				break;
 
 
 			}
-
-			case 'V':
-			case 'v':
+			else
 			{
-				if (check_V(word, x, y))
-				{
-					if (x - 1 >= 0) //check if it starts in the beginning of the board 
-						matrix[y][x - 1] = '#';
+				std::cout << "Cannot fit " << word << " in position " << position << endl << endl;
+				break;
 
-					if (x + word.length()<columns) //check if it ends in the end of the board 
-						matrix[y][x + word.length()] = '#';
-					size_t i = 0;
-					while (i < word.length())
-					{
-						matrix[y][x+i] = word.at(i);
-				
-						i++;
-					}
 
-					//add to map
-					all_words.insert(pair<string, string>(position, word));
-					break;
-
-					
-				}
-				else
-				{
-					std::cout << "Cannot fit " << word << " in position " << position << endl << endl;
-					break;
-				}
-			
 			}
+
+
+		}
+
+		case 'V':
+		case 'v':
+		{
+			if (check_V(word, x, y))
+			{
+				if (x - 1 >= 0) //check if it starts in the beginning of the board 
+					matrix[y][x - 1] = '#';
+
+				if (x + word.length() <= lines) //check if it ends in the end of the board 
+					matrix[y][x + word.length()] = '#';
+				size_t i = 0;
+				while (i < word.length())
+				{
+					matrix[y][x + i] = word.at(i);
+
+					i++;
+				}
+
+				//add to map
+				all_words.insert(pair<string, string>(position, word));
+				break;
+
+
 			}
+			else
+			{
+				std::cout << "Cannot fit " << word << " in position " << position << endl << endl;
+				break;
+			}
+
+		}
+		}
 	}
 	else
 		cout << "Invalid input\n";
@@ -314,13 +318,13 @@ void Board::remove_word(string position)
 			break;
 
 		}
-	
-	}
-	
-	for (const auto& x : all_words)
-	{
-		addword_nochecking(x.first, x.second);
-	}
+
+		}
+
+		for (const auto& x : all_words)
+		{
+			addword_nochecking(x.first, x.second);
+		}
 
 	}
 	else
@@ -394,68 +398,68 @@ const vector<vector<char>> &Board::matrixboard() const
 vector<string> Board::get_wildcard(string position)
 {
 
-		//initializing variables position
-		int x = 0;
-		int y = 0;
-		char orientation = 'a';
+	//initializing variables position
+	int x = 0;
+	int y = 0;
+	char orientation = 'a';
 
-		//get true value for variables position 
-		transform_to_pos(position, y, x, orientation);
+	//get true value for variables position 
+	transform_to_pos(position, y, x, orientation);
 
-		vector<string> words; //all possible words
-		string possible_word;
-		switch (orientation)
+	vector<string> words; //all possible words
+	string possible_word;
+	switch (orientation)
+	{
+	case 'V':
+	case 'v':
+	{
+		if (matrix[x][y] != '.')
+			possible_word += matrix[x][y];
+
+
+		for (size_t i = 1; matrix[x][y + i] != '#' && (y + i) < lines - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
 		{
-		case 'V':
-		case 'v':
-		{
-			if (matrix[x][y] != '.')
-				possible_word += matrix[x][y];
+			//for (size_t a=0; a<= i; a++)
+			if (matrix[x][y + i] == '.')
+				possible_word += '?';
+			else
+				possible_word += matrix[x][y + i];
 
-
-			for (size_t i = 1; matrix[x][y + i] != '#' && (y + i) < lines - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
-			{
-				//for (size_t a=0; a<= i; a++)
-				if (matrix[x][y + i] == '.')
-					possible_word += '?';
-				else
-					possible_word += matrix[x][y + i];
-
-				words.push_back(possible_word);
-			}
-
-
-			break;
+			words.push_back(possible_word);
 		}
 
-		case 'H':
-		case 'h':
+
+		break;
+	}
+
+	case 'H':
+	case 'h':
+	{
+		if (matrix[x][y] != '.')
+			possible_word += matrix[x][y];
+
+
+		for (size_t i = 1; matrix[x + i][y] != '#' && (x + i) < columns - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
 		{
-			if (matrix[x][y] != '.')
-				possible_word += matrix[x][y];
+			//for (size_t a=0; a<= i; a++)
+			if (matrix[x + i][y] == '.')
+				possible_word += '?';
+			else
+				possible_word += matrix[x + i][y];
 
-
-			for (size_t i = 1; matrix[x+i][y] != '#' && (x + i) < columns - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
-			{
-				//for (size_t a=0; a<= i; a++)
-				if (matrix[x+i][y] == '.')
-					possible_word += '?';
-				else
-					possible_word += matrix[x+i][y];
-
-				words.push_back(possible_word);
-			}
-
-
-			break;
-		}
+			words.push_back(possible_word);
 		}
 
-		return words;
+
+		break;
+	}
+	}
+
+	return words;
 
 }
 
-const map<string, string> &Board::mapall_words() const 
+const map<string, string> &Board::mapall_words() const
 {
 	return all_words;
 }
@@ -471,37 +475,40 @@ bool Board::is_word_at_position(string &position, string &word)
 /*
 void Board::show_emptyboard()
 {
-	empty_matrix.resize(lines);
-
-	for (size_t i = 0; i < empty_matrix.size(); i++)
-		matrix[i].resize(columns);
-
-	for (size_t i = 0; i < empty_matrix.size(); i++)
-		fill(matrix[i].begin(), matrix[i].end(), '.');
-
-	cout << ' ';
-	// PRINT name of lines
-
-	setcolor(LIGHTRED);
-	for (size_t i = 0; i < lines; i++)
-	{
-		cout << ' ' << name_lines[i];
-	}
-
-	cout << endl;
-
-	for (size_t i = 0; i < columns; i++)
-	{
-		setcolor(LIGHTRED, BLACK);
-		cout << name_columns[i] << ' ';
-
-		setcolor(BLACK, LIGHTGRAY);
-		for (size_t a = 0; a < lines; a++)
-			cout << empty_matrix[a][i] << ' ';
-		cout << endl;
-	}
-	setcolor(WHITE, BLACK);
-	cout << endl;
+empty_matrix.resize(lines);
+for (size_t i = 0; i < empty_matrix.size(); i++)
+matrix[i].resize(columns);
+for (size_t i = 0; i < empty_matrix.size(); i++)
+fill(matrix[i].begin(), matrix[i].end(), '.');
+cout << ' ';
+// PRINT name of lines
+setcolor(LIGHTRED);
+for (size_t i = 0; i < lines; i++)
+{
+cout << ' ' << name_lines[i];
+}
+cout << endl;
+for (size_t i = 0; i < columns; i++)
+{
+setcolor(LIGHTRED, BLACK);
+cout << name_columns[i] << ' ';
+setcolor(BLACK, LIGHTGRAY);
+for (size_t a = 0; a < lines; a++)
+cout << empty_matrix[a][i] << ' ';
+cout << endl;
+}
+setcolor(WHITE, BLACK);
+cout << endl;
 }
 */
 
+
+bool Board::is_word_in_board(string &word)
+{
+	for (const auto& kv_pair : all_words)
+	{
+		if (kv_pair.second == word)
+			return true;
+	}
+	return false;
+}
