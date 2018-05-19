@@ -74,11 +74,12 @@ void cwcreator::create_puzzle()
 		cout << "Enter valid numbers!" << endl;
 		cin >> line >> column;
 	}
-
+	
     board = Board (line, column);
 	board.show();
 
 	update_board(board, dictionary);
+
 }
 
 void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
@@ -104,7 +105,7 @@ void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
 				boardname.remove_word(position); // Remove Word
 			else if (word == "?")
 			{
-				cout << "INCOMPLETO" << endl;
+				cout << "Incompleto" << endl;
 			}
 			else if (dictionaryname.validword(word)) // Is valid?
 				boardname.addword(position, word); // Add Word
@@ -119,6 +120,8 @@ void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
 
 			string option;
 
+			question_is_over();
+			
 			while (option != "no" && option != "yes") {
 				cin.clear();
 				cout << "You want to save the board? (yes / no) ";
@@ -222,7 +225,7 @@ void cwcreator::question_is_over(Board boardname)
 		if (option == "yes")
 		{
 			boardname.fill_finished();
-			//  função faz a verificação final
+			//bool valid = 
 		//	if (true) {
 		//	save_board();
 		//}
