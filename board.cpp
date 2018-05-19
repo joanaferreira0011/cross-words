@@ -210,6 +210,7 @@ void Board::addword(string position, string word)
 			//check if empty
 			if (check_H(word, x, y))
 			{
+
 				if (y - 1 >= 0) //check if it starts in the beginning of the board 
 					matrix[y - 1][x] = '#';
 
@@ -217,6 +218,31 @@ void Board::addword(string position, string word)
 					matrix[y + word.length()][x] = '#';
 				size_t i = 0;
 				while (i < word.length())
+
+				//check if empty
+				if (check_H(word, x, y))
+				{
+					if (y - 1 >= 0) //check if it starts in the beginning of the board 
+						matrix[y - 1][x] = '#';
+
+					if (y + word.length()<=columns) //check if it ends in the end of the board 
+						matrix[y + word.length()][x] = '#';
+					size_t i = 0;
+					while (i < word.length())
+					{
+						matrix[y+i][x] = word.at(i);
+						
+						i++;
+					}
+
+					//add to map
+					all_words.insert(pair<string, string>(position, word));
+					break;
+
+					
+				}
+				else
+
 				{
 					matrix[y + i][x] = word.at(i);
 
@@ -245,6 +271,7 @@ void Board::addword(string position, string word)
 		{
 			if (check_V(word, x, y))
 			{
+
 				if (x - 1 >= 0) //check if it starts in the beginning of the board 
 					matrix[y][x - 1] = '#';
 
@@ -252,6 +279,29 @@ void Board::addword(string position, string word)
 					matrix[y][x + word.length()] = '#';
 				size_t i = 0;
 				while (i < word.length())
+
+				if (check_V(word, x, y))
+				{
+					if (x - 1 >= 0) //check if it starts in the beginning of the board 
+						matrix[y][x - 1] = '#';
+
+					if (x + word.length()<=lines) //check if it ends in the end of the board 
+						matrix[y][x + word.length()] = '#';
+					size_t i = 0;
+					while (i < word.length())
+					{
+						matrix[y][x+i] = word.at(i);
+				
+						i++;
+					}
+
+					//add to map
+					all_words.insert(pair<string, string>(position, word));
+					break;
+
+					
+				}
+				else
 				{
 					matrix[y][x + i] = word.at(i);
 
@@ -487,6 +537,7 @@ for (size_t i = 0; i < lines; i++)
 {
 cout << ' ' << name_lines[i];
 }
+<<<<<<< HEAD
 cout << endl;
 for (size_t i = 0; i < columns; i++)
 {
@@ -500,6 +551,8 @@ cout << endl;
 setcolor(WHITE, BLACK);
 cout << endl;
 }
+=======
+>>>>>>> 3b6d597760a93b7ed360107da4fd5ecd5c178852
 */
 
 
