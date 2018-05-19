@@ -121,7 +121,7 @@ void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
 
 			string option;
 
-			question_is_over();
+			//question_is_over();
 			
 			while (option != "no" && option != "yes") {
 				cin.clear();

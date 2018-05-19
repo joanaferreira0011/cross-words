@@ -505,10 +505,3 @@ void Board::show_emptyboard()
 }
 */
 
-bool Board::is_word_at_position(string &position, string &word)
-{
-	if (all_words.find(position)->second == word)
-		return true;
-	else
-		return false;
-}
