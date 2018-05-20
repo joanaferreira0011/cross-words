@@ -126,16 +126,21 @@ void cwcreator::update_board(Board boardname, Dictionary dictionaryname)
 
 			string option;
 
-			//question_is_over();
+			question_is_over(boardname);
 
 			while (option != "no" && option != "yes") {
 				cin.clear();
 				cout << "You want to save the board? (yes / no) ";
 				cin >> option;
 				if (option == "yes")
+				{
 					save_board(boardname);
+				}
 				else if (option == "no")
+				{
+					
 					exit(1);
+				}
 				else if (option != "no")
 					cerr << "Insert a valid option." << endl;
 			}
@@ -171,12 +176,13 @@ void cwcreator::resume_puzzle()
 		cin >> boardfilename;
 		boardfile.open(boardfilename);
 	}
+	
 	getline(boardfile, dictionaryfilename);
 	Dictionary dictionary1(dictionaryfilename);
 	this->dictionaryname = dictionaryfilename;
 	boardfile.close();
 
-	Board board1(boardfilename);
+	board1= Board(boardfilename);
 	
 	board1.show();
 
@@ -191,24 +197,21 @@ void cwcreator::question_is_over(Board boardname)
 {
 	string option;
 
-	do
+	while(option != "yes" && option != "no")
 	{
+		cin.clear();
 		cout << "Finished the board (yes / no)?";
 		cin >> option;
 
 		if (option == "yes")
 		{
-			boardname.fill_finished();
-			//bool valid = 
-			//	if (true) {
-			//	save_board();
-			//}
+			board1.fill_finished();
 			break;
 		}
 		else if (option != "no")
 			cout << "Invalid option" << endl;
 
-	} while (option != "yes" && option != "no");
+	};
 
 }
 

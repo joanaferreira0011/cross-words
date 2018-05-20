@@ -35,6 +35,7 @@ private:
 	@It has as parameter the board, receives the name of the board */
 	
 	Board board;
+	Board board1;
 	Dictionary dictionary;
 	string dictionaryname;
 };
