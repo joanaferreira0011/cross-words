@@ -451,6 +451,7 @@ const vector<vector<char>> &Board::matrixboard() const
 	return matrix;
 }
 
+/*
 vector<string> Board::get_wildcard(string position)
 {
 
@@ -484,16 +485,7 @@ vector<string> Board::get_wildcard(string position)
 			words.push_back(possible_word);
 		}
 
-		for (size_t i = 1; matrix[x][y + i] != '#' && (y + i) < lines - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
-		{
-			//for (size_t a=0; a<= i; a++)
-			if (matrix[x][y + i] == '.')
-				possible_word += '*';
-			else
-				possible_word += matrix[x][y + i];
-
-			break;
-		}
+	}
 
 	case 'H':
 	case 'h':
@@ -513,23 +505,84 @@ vector<string> Board::get_wildcard(string position)
 			words.push_back(possible_word);
 		}
 
-		for (size_t i = 1; matrix[x + i][y] != '#' && (x + i) < columns - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
-		{
-			//for (size_t a=0; a<= i; a++)
-			if (matrix[x + i][y] == '.')
-				possible_word += '*';
-			else
-				possible_word += matrix[x + i][y];
-
-			break;
-		}
+		
 	}
 
 	return words;
 
 	}
-	}
 }
+*/
+vector<string> Board::get_wildcard(string position)
+{
+	//check if valid input 
+	if (position.length() == 3 && isupper(position[0]) && !(isupper(position[1])) && (toupper(position[2]) == 'V' || toupper(position[2]) == 'H' || toupper(position[2]) == 'v' || toupper(position[2]) == 'h'))
+	{
+		//initializing variables position 
+		int x = 0;
+		int y = 0;
+		char orientation = 'a';
+
+		//get true value for variables position  
+		transform_to_pos(position, y, x, orientation);
+
+		vector<string> words; //all possible words 
+		string possible_word;
+		switch (orientation)
+		{
+		case 'V':
+		case 'v':
+		{
+			if (matrix[x][y] != '.')
+				possible_word += matrix[x][y];
+
+
+			for (size_t i = 1; matrix[x][y + i] != '#' && (y + i) < lines - 1; i++) //scan all possibilitis like 'w?', 'w??', ... 
+			{
+				//for (size_t a=0; a<= i; a++) 
+				if (matrix[x][y + i] == '.')
+					possible_word += '?';
+				else
+					possible_word += matrix[x][y + i];
+
+				words.push_back(possible_word);
+			}
+
+
+			break;
+		}
+
+		case 'H':
+		case 'h':
+		{
+			if (matrix[x][y] != '.')
+				possible_word += matrix[x][y];
+
+
+			for (size_t i = 1; matrix[x + i][y] != '#' && (x + i) < columns - 1; i++) //scan all possibilitis like 'w?', 'w??', ... 
+			{
+				//for (size_t a=0; a<= i; a++) 
+				if (matrix[x + i][y] == '.')
+					possible_word += '?';
+				else
+					possible_word += matrix[x + i][y];
+
+				words.push_back(possible_word);
+			}
+
+
+			break;
+		}
+		}
+
+		return words;
+	}
+	else
+		cout << "Invalid position \n \n";
+
+}
+
+
 
 const map<string, string> &Board::mapall_words() const
 {
