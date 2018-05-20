@@ -27,7 +27,6 @@ public:
 	@Returns true if it is a valid word, or returns false if the word is not valid  */
 	void print_matches(vector<string> &possible_words);
 	/* prints possible matches for wildcard words from vector possible_words*/
-	
 
 private:
 	map<string, vector<string>> synonymslist;
