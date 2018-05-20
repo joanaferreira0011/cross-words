@@ -6,9 +6,100 @@
 #include <algorithm>
 #include <fstream>
 #include <set>
+#include "string.h"
 
 using namespace std;
 
+// This function compares text strings, one of which can 
+// have wildcards ("*").
+/*bool Dictionary::GeneralTextCompare(
+	char * pTameText,
+	// A string without wildcards
+	char * pWildText,
+	// A (potentially) corresponding string with wildcards
+	bool bCaseSensitive = false,
+	// By default, match on "X" vs "x"
+	char cAltTerminator = '\0'
+	// For function names, for example, you can stop at the first "("
+)
+{
+	bool bMatch = true;
+	char * pAfterLastWild = NULL;
+	// Location after last "*", if we've encountered one
+	char t, w;
+	// Walk the text strings one character at a time.
+	while (1)
+	{
+		t = *pTameText;
+		w = *pWildText;
+		// How do you match a unique text string?
+		if (!t || t == cAltTerminator)
+		{
+			// Easy: unique up on it!
+			if (!w || w == cAltTerminator)
+			{
+				break;                 // "x" matches "x"
+			}
+			else if (w == '*')
+			{
+				pWildText++;
+				continue;              // "x*" matches "x" or "xy"
+			}
+			bMatch = false;
+			break;                     // "x" doesn't match "xy"
+		}
+		else
+		{
+			if (!bCaseSensitive)
+			{
+				// Lowercase the characters to be compared.
+				if (t >= 'A' && t <= 'Z')
+				{
+					t += ('a' - 'A');
+				}
+
+				if (w >= 'A' && w <= 'Z')
+				{
+					w += ('a' - 'A');
+				}
+			}
+			// How do you match a tame text string?
+			if (t != w)
+			{
+				// The tame way: unique up on it!
+				if (w == '*')
+				{
+					pAfterLastWild = ++pWildText;
+					continue;              // "*y" matches "xy"
+				}
+				else if (pAfterLastWild)
+				{
+					pWildText = pAfterLastWild;
+					w = *pWildText;
+
+					if (!w || w == cAltTerminator)
+					{
+						break;             // "*" matches "x"
+					}
+					else if (t == w)
+					{
+						pWildText++;
+					}
+					pTameText++;
+					continue;     // "*sip*" matches "mississippi"
+				}
+				else
+				{
+					bMatch = false;
+					break;           // "x" doesn't match "y"
+				}
+			}
+		}
+		pTameText++;
+		pWildText++;
+	}
+	return bMatch;
+}*/
 //  ------------- Additional Functions ------------- //
 
 // Will make the entire string in uppercase 
@@ -164,14 +255,24 @@ bool Dictionary::validword(string word)
 	*/
 }
 
-vector<string> Dictionary::find_matches(vector<string> &possible_words)
+vector<string> Dictionary::find_matches(vector<string> possible_words)
 {
 	vector<string> words;
+
 	for (size_t i = 0; i < possible_words.size(); i++)
 	{
+		string wild = possible_words.at(i);
 		for (const auto& x : synonymslist)
 		{
-			if (wildcardMatch(x.first.c_str(), possible_words.at(i).c_str()))
+			string notwild = x.first;
+			if (wildcardMatch(notwild.c_str(), wild.c_str()))
+			/*if(GeneralTextCompare(
+				x.first.c_str(),
+				// A string without wildcards
+				possible_words.at(i).c_str()
+				// A (potentially) corresponding string with wildcards
+
+			))*/
 				words.push_back(x.first);
 		}
 	}
@@ -180,9 +281,10 @@ vector<string> Dictionary::find_matches(vector<string> &possible_words)
 	
 }
 
-void Dictionary::print_matches(vector<string> &possible_words)
+void Dictionary::print_matches(vector<string> possible_words)
 {
 	vector<string> words = find_matches(possible_words);
+
 	if (words.size() == 0)
 		std::cout << "Sorry, no matching words for that position" << endl << endl;
 	else
