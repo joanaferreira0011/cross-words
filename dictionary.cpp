@@ -65,7 +65,6 @@ Dictionary::Dictionary()
 	// Structure
 	map<string, vector<string>> synonymslist;
 	set<string> validwordslist;
-	map<string, vector<string>> suggestedwords;
 }
 
 Dictionary::Dictionary(string filename)
