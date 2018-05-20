@@ -59,10 +59,7 @@ bool Board::check_H(string &word, int &x, int &y)
 			return false;
 	}
 
-
-			if (acum == (word.length() + 1))
-				return true;
-			return false;
+			return true;
 	}
 	else
 		return false;
@@ -82,21 +79,18 @@ bool Board::check_V(string &word, int &y, int &x)
 		while (acum < word.length())
 		{
 		cycle:		if ((matrix[x][y + acum] == '.') || (matrix[x][y + acum] == word.at(acum)))
-		{
-			acum++;
-		}
-
-					else
+						acum++;
+						else
 						return false;
 		}
 
-
-		if (acum == (word.length() + 1))
-			return true;
-		return false;
+	
+		return true;
 	}
 	else
 		return false;
+
+
 }
 
 Board::Board(unsigned int l, unsigned int c)
@@ -754,9 +748,26 @@ void Board::create_playboard()
 
 	}
 }
-/*
-vector<string> take_words_from_board()
-{
 
+
+vector<string> Board::take_words_from_board()
+{
+	vector<string> words;
+	//get words vertical
+	for (size_t i = 0; i < columns; i++)
+	{
+		string line((matrix.at(i)).begin(), (matrix.at(i)).end());
+		size_t a = 0;
+		int index = 0;
+		while (a < line.length())
+			if (line.at(a) = '#')
+			{
+				words.push_back(line.substr(index, a - index + 1));
+				index = a + 1;
+			}
+
+
+	}
+	return words;
 }
-*/
+
