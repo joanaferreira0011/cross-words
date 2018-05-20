@@ -59,10 +59,7 @@ bool Board::check_H(string &word, int &x, int &y)
 			return false;
 	}
 
-
-			if (acum == (word.length() + 1))
-				return true;
-			return false;
+			return true;
 	}
 	else
 		return false;
@@ -82,21 +79,18 @@ bool Board::check_V(string &word, int &y, int &x)
 		while (acum < word.length())
 		{
 		cycle:		if ((matrix[x][y + acum] == '.') || (matrix[x][y + acum] == word.at(acum)))
-		{
 			acum++;
-		}
-
 					else
 						return false;
 		}
 
 
-		if (acum == (word.length() + 1))
-			return true;
-		return false;
+		return true;
 	}
 	else
 		return false;
+
+
 }
 
 Board::Board(unsigned int l, unsigned int c)
@@ -187,12 +181,12 @@ Board::Board(string boardfilename)
 	for (size_t i = 0; i < matrix.size(); i++)
 		matrix[i].resize(columns);
 
-	
+
 	while (!boardfile.eof())
 	{
 		getline(boardfile, line);
-		if (! (line==""))
-		all_words.insert(pair<string, string>(line.substr(0, 3), line.substr(4)));
+		if (!(line == ""))
+			all_words.insert(pair<string, string>(line.substr(0, 3), line.substr(4)));
 	}
 
 
@@ -227,7 +221,7 @@ Board::Board(string boardfilename)
 		for (size_t a = 0; a < matrix.at(i).size(); a++)
 		{
 			if (matrix.at(i).at(a) == '\0')
-				matrix.at(i).at(a) = '.';
+				matrix.at(i).at(a) = '#';
 		}
 	}
 
@@ -514,7 +508,7 @@ void Board::addword_nochecking(string position, string word)
 	transform_to_pos(position, x, y, orientation);
 
 	//write the word
-	switch (orientation) 
+	switch (orientation)
 	{
 	case 'H':
 	case 'h':
@@ -558,68 +552,54 @@ const vector<vector<char>> &Board::matrixboard() const
 /*
 vector<string> Board::get_wildcard(string position)
 {
-
-	//initializing variables position
-	int x = 0;
-	int y = 0;
-	char orientation = 'a';
-
-	//get true value for variables position
-	transform_to_pos(position, y, x, orientation);
-
-	vector<string> words; //all possible words
-	string possible_word;
-	switch (orientation)
-	{
-	case 'V':
-	case 'v':
-	{
-		if (matrix[x][y] != '.')
-			possible_word += matrix[x][y];
-
-
-		for (size_t i = 1; matrix[x][y + i] != '#' && (y + i) < lines - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
-		{
-			//for (size_t a=0; a<= i; a++)
-			if (matrix[x][y + i] == '.')
-				possible_word += '?';
-			else
-				possible_word += matrix[x][y + i];
-
-			words.push_back(possible_word);
-		}
-
-	}
-
-	case 'H':
-	case 'h':
-	{
-		if (matrix[x][y] != '.')
-			possible_word += matrix[x][y];
-
-
-		for (size_t i = 1; matrix[x + i][y] != '#' && (x + i) < columns - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
-		{
-			//for (size_t a=0; a<= i; a++)
-			if (matrix[x + i][y] == '.')
-				possible_word += '?';
-			else
-				possible_word += matrix[x + i][y];
-
-			words.push_back(possible_word);
-		}
-
-
-	}
-
-	return words;
-
-	}
+//initializing variables position
+int x = 0;
+int y = 0;
+char orientation = 'a';
+//get true value for variables position
+transform_to_pos(position, y, x, orientation);
+vector<string> words; //all possible words
+string possible_word;
+switch (orientation)
+{
+case 'V':
+case 'v':
+{
+if (matrix[x][y] != '.')
+possible_word += matrix[x][y];
+for (size_t i = 1; matrix[x][y + i] != '#' && (y + i) < lines - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
+{
+//for (size_t a=0; a<= i; a++)
+if (matrix[x][y + i] == '.')
+possible_word += '?';
+else
+possible_word += matrix[x][y + i];
+words.push_back(possible_word);
+}
+}
+case 'H':
+case 'h':
+{
+if (matrix[x][y] != '.')
+possible_word += matrix[x][y];
+for (size_t i = 1; matrix[x + i][y] != '#' && (x + i) < columns - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
+{
+//for (size_t a=0; a<= i; a++)
+if (matrix[x + i][y] == '.')
+possible_word += '?';
+else
+possible_word += matrix[x + i][y];
+words.push_back(possible_word);
+}
+}
+return words;
+}
 }
 */
 vector<string> Board::get_wildcard(string position)
 {
-	//check if valid input 
+	vector<string> words; //all possible words 
+						  //check if valid input 
 	if (position.length() == 3 && isupper(position[0]) && !(isupper(position[1])) && (toupper(position[2]) == 'V' || toupper(position[2]) == 'H' || toupper(position[2]) == 'v' || toupper(position[2]) == 'h'))
 	{
 		//initializing variables position 
@@ -630,7 +610,7 @@ vector<string> Board::get_wildcard(string position)
 		//get true value for variables position  
 		transform_to_pos(position, y, x, orientation);
 
-		vector<string> words; //all possible words 
+
 		string possible_word;
 		switch (orientation)
 		{
@@ -682,7 +662,10 @@ vector<string> Board::get_wildcard(string position)
 		return words;
 	}
 	else
+	{
 		cout << "Invalid position \n \n";
+		return words;
+	}
 
 }
 
@@ -754,9 +737,25 @@ void Board::create_playboard()
 
 	}
 }
-/*
-vector<string> take_words_from_board()
-{
 
+
+vector<string> Board::take_words_from_board()
+{
+	vector<string> words;
+	//get words vertical
+	for (size_t i = 0; i < columns; i++)
+	{
+		string line((matrix.at(i)).begin(), (matrix.at(i)).end());
+		size_t a = 0;
+		int index = 0;
+		while (a < line.length())
+			if (line.at(a) = '#')
+			{
+				words.push_back(line.substr(index, a - index + 1));
+				index = a + 1;
+			}
+
+
+	}
+	return words;
 }
-*/
