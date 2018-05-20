@@ -221,7 +221,7 @@ Board::Board(string boardfilename)
 		for (size_t a = 0; a < matrix.at(i).size(); a++)
 		{
 			if (matrix.at(i).at(a) == '\0')
-				matrix.at(i).at(a) = '#';
+				matrix.at(i).at(a) = '.';
 		}
 	}
 
