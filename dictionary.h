@@ -32,7 +32,6 @@ public:
 private:
 	map<string, vector<string>> synonymslist;
 	set<string> validwordslist;
-	vector<string> suggestedwords;
 	vector<string> find_matches(vector<string> &possible_words);
 };
 
