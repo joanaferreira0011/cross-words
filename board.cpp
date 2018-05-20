@@ -613,6 +613,7 @@ vector<string> Board::get_wildcard(string position)
 */
 vector<string> Board::get_wildcard(string position)
 {
+	vector<string> words; //all possible words 
 	//check if valid input 
 	if (position.length() == 3 && isupper(position[0]) && !(isupper(position[1])) && (toupper(position[2]) == 'V' || toupper(position[2]) == 'H' || toupper(position[2]) == 'v' || toupper(position[2]) == 'h'))
 	{
@@ -624,7 +625,7 @@ vector<string> Board::get_wildcard(string position)
 		//get true value for variables position  
 		transform_to_pos(position, y, x, orientation);
 
-		vector<string> words; //all possible words 
+		
 		string possible_word;
 		switch (orientation)
 		{
@@ -676,7 +677,10 @@ vector<string> Board::get_wildcard(string position)
 		return words;
 	}
 	else
+	{
 		cout << "Invalid position \n \n";
+		return words;
+	}
 
 }
 
