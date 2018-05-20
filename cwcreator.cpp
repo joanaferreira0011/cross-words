@@ -150,61 +150,34 @@ void cwcreator::resume_puzzle()
 	cout << "------------------------------------------------" << endl;
 	cout << "RESUME PUZZLE " << endl;
 	cout << "------------------------------------------------" << endl;
+	
+	ifstream boardfile, dictionaryfile;
+	string dictionaryfilename;
 
-	ifstream boardfile;
-
-	string boardfilename, dictionaryfilename, line;
-	int lines = 1;
-	int columns = 0;
-
-	cout << "Enter the board file name you want to change: ";
+	string boardfilename;
+	
+	cout << "Enter the board file name you want play: ";
 	cin >> boardfilename;
-
+	
 	//opening file
 	boardfile.open(boardfilename);
-
-
+	
 	while (!boardfile.is_open())
 	{
 		cin.clear();
 		cin.ignore(1000, '\n');
 		cerr << "File " << "board" << " not found !\n";
-		cout << "Enter the board file name you want to change: ";
+		cout << "Enter the board file name you want play: ";
 		cin >> boardfilename;
 		boardfile.open(boardfilename);
 	}
-
 	getline(boardfile, dictionaryfilename);
-	this->dictionaryname = dictionaryfilename;
 	Dictionary dictionary1(dictionaryfilename);
-
-	getline(boardfile, line); // Skip empty line
-
-							  // Count the columns
-
-	getline(boardfile, line) && line != "";
-
-	string strings = " ";
-	for (size_t i = 0; i < line.size(); i++)
-	{
-		strings[0] = line[i];
-		if (strings != " ")
-			columns++;
-	}
-
-	// Count the lines
-
-	while (getline(boardfile, line) && line != "")
-		lines++;
-
-	Board board1(lines, columns);
-	while (getline(boardfile, line))
-	{
-		if (line != "")
-			board1.addword(line.substr(0, line.find(' ')), line.substr(line.find(' ') + 1, line.size() - 1));
-	}
-
+	this->dictionaryname = dictionaryfilename;
 	boardfile.close();
+
+	Board board1(boardfilename);
+	//board1.show();
 	board1.show();
 
 	// ---- The same as the create puzzle function --- //

@@ -14,6 +14,8 @@ public:
 	Board() {};
 	Board(unsigned int lines, unsigned int columns);
 	/* Creates board*/
+	Board(string boardfilename);
+	/* */
 	void addword(string position, string word);
 	/* Adds word to board and map
 	@position for the first letter, must be a 3 char str: 1st char is an uppercase letter representing the line, second char: a lowercase representing the column and last char a 'H' for horizontal or 'V' for vertical
@@ -57,6 +59,7 @@ public:
 private:
 	unsigned int lines;
 	unsigned int columns;
+	string dictionaryname;
 	vector<vector<char> > matrix;
 	vector<vector<char> > empty_matrix;
 	vector<char> name_lines;

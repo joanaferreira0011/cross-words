@@ -34,6 +34,8 @@ void setcolor(unsigned int color, unsigned int background_color)
 }
 // ------------------------------------------------------------------------------- //
 
+
+
 bool Board::check_H(string &word, int &x, int &y)
 {
 	size_t acum = 0;
@@ -129,6 +131,73 @@ Board::Board(unsigned int l, unsigned int c)
 	{
 		char letter = (char)('A' + i);
 		name_columns[i] = letter;
+	}
+
+}
+
+Board::Board(string boardfilename)
+{
+	ifstream boardfile;
+
+	string line;
+	string position, word;
+	lines = 1;
+	columns = 0;
+
+	//opening file
+	boardfile.open(boardfilename);
+	
+	while (!boardfile.is_open())
+	{
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cerr << "File " << "board" << " not found !\n";
+		cout << "Enter the board file name you want play: ";
+		cin >> boardfilename;
+		boardfile.open(boardfilename);
+	}
+
+	// ignore two first lines
+	boardfile.ignore(1000, '\n');
+	boardfile.ignore(1000, '\n');
+
+	getline(boardfile, line); // Skip empty line
+
+							  // Count the columns
+
+	getline(boardfile, line) && line != "";
+
+	string strings = " ";
+	for (size_t i = 0; i < line.size(); i++)
+	{
+		strings[0] = line[i];
+		if (strings != " ")
+			columns++;
+	}
+
+	// Count the lines
+
+	while (getline(boardfile, line) && line != "")
+		lines++;
+
+	matrix.resize(lines);
+
+	for (size_t i = 0; i < matrix.size(); i++)
+		matrix[i].resize(columns);
+
+	getline(boardfile, line); //skip empty line
+
+	while (!cin.eof())
+	{
+		getline(boardfile, line);
+		all_words.insert(pair<string, string>(line.substr(0, 3), line.substr(4)));
+	}
+
+	
+	boardfile.close();
+	for (const auto& x : all_words)
+	{
+		addword_nochecking(x.first, x.second);
 	}
 
 }
