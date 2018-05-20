@@ -37,7 +37,10 @@ void setcolor(unsigned int color, unsigned int background_color)
 bool Board::check_H(string &word, int &x, int &y)
 {
 	size_t acum = 0;
-	if ((y - 1 < 0) && ((y + word.length() - 1) <lines)) //check if word starts at the beginning of the board 
+	if ((y - 1 < 0) && ((y + word.length() - 1) <columns)) //check if word starts at the beginning of the board 
+		goto cycle;
+
+	if ((y + word.length() - 1) ==columns) //check if word ends at the beginning of the board 
 		goto cycle;
 
 
@@ -66,6 +69,9 @@ bool Board::check_V(string &word, int &y, int &x)
 {
 	size_t acum = 0;
 	if ((y - 1 < 0) && ((y + word.length() - 1) <lines)) //check if word starts at the beginning of the board 
+		goto cycle;
+
+	if ((y + word.length() - 1) == lines) //check if word ends at the beginning of the board 
 		goto cycle;
 
 	if ((matrix[x][y - 1] == '.' || matrix[x][y - 1] == '#') && ((y + word.length() - 1) <lines) && (matrix.at(x).at(y + word.length()) == '.' || matrix.at(x).at(y + word.length()) == '#'))
@@ -478,16 +484,16 @@ vector<string> Board::get_wildcard(string position)
 			words.push_back(possible_word);
 		}
 
-			for (size_t i = 1; matrix[x][y + i] != '#' && (y + i) < lines - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
-			{
-				//for (size_t a=0; a<= i; a++)
-				if (matrix[x][y + i] == '.')
-					possible_word += '*';
-				else
-					possible_word += matrix[x][y + i];
+		for (size_t i = 1; matrix[x][y + i] != '#' && (y + i) < lines - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
+		{
+			//for (size_t a=0; a<= i; a++)
+			if (matrix[x][y + i] == '.')
+				possible_word += '*';
+			else
+				possible_word += matrix[x][y + i];
 
-		break;
-	}
+			break;
+		}
 
 	case 'H':
 	case 'h':
@@ -507,20 +513,22 @@ vector<string> Board::get_wildcard(string position)
 			words.push_back(possible_word);
 		}
 
-			for (size_t i = 1; matrix[x+i][y] != '#' && (x + i) < columns - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
-			{
-				//for (size_t a=0; a<= i; a++)
-				if (matrix[x+i][y] == '.')
-					possible_word += '*';
-				else
-					possible_word += matrix[x+i][y];
+		for (size_t i = 1; matrix[x + i][y] != '#' && (x + i) < columns - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
+		{
+			//for (size_t a=0; a<= i; a++)
+			if (matrix[x + i][y] == '.')
+				possible_word += '*';
+			else
+				possible_word += matrix[x + i][y];
 
-		break;
-	}
+			break;
+		}
 	}
 
 	return words;
 
+	}
+	}
 }
 
 const map<string, string> &Board::mapall_words() const
