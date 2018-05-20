@@ -478,6 +478,13 @@ vector<string> Board::get_wildcard(string position)
 			words.push_back(possible_word);
 		}
 
+			for (size_t i = 1; matrix[x][y + i] != '#' && (y + i) < lines - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
+			{
+				//for (size_t a=0; a<= i; a++)
+				if (matrix[x][y + i] == '.')
+					possible_word += '*';
+				else
+					possible_word += matrix[x][y + i];
 
 		break;
 	}
@@ -500,6 +507,13 @@ vector<string> Board::get_wildcard(string position)
 			words.push_back(possible_word);
 		}
 
+			for (size_t i = 1; matrix[x+i][y] != '#' && (x + i) < columns - 1; i++) //scan all possibilitis like 'w?', 'w??', ...
+			{
+				//for (size_t a=0; a<= i; a++)
+				if (matrix[x+i][y] == '.')
+					possible_word += '*';
+				else
+					possible_word += matrix[x+i][y];
 
 		break;
 	}
