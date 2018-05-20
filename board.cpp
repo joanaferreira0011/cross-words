@@ -587,3 +587,15 @@ bool Board::is_word_in_board(string &word)
 	}
 	return false;
 }
+
+void Board::create_playboard()
+{
+	for (size_t i = 0; i < columns; i++)
+	{
+
+		for (size_t a = 0; a < lines; a++)
+			if (matrix[a][i] != '#')
+				matrix[a][i] = '.';
+	
+	}
+}

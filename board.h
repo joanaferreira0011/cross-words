@@ -50,6 +50,9 @@ public:
 	//checks if all words in the board make sense
 	bool is_word_in_board(string &word);
 	//check if str word is already in board
+	void create_playboard();
+	//transforms normal board into ready to play board. letters turn into "."
+
 
 private:
 	unsigned int lines;
