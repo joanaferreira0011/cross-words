@@ -177,7 +177,7 @@ void cwcreator::resume_puzzle()
 	boardfile.close();
 
 	Board board1(boardfilename);
-	//board1.show();
+	
 	board1.show();
 
 	// ---- The same as the create puzzle function --- //
