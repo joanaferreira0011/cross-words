@@ -1,5 +1,5 @@
 # cross_words
-Cross words made for Programming Course
+A Crosswords-puzzle made for Programming Course
 
 ### Errors that have to be corrected:
 * bool Wildcard matching function does not work
